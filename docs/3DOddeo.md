@@ -1,11 +1,11 @@
-#3D Audio -- A Break Down
+# 3D Audio -- A Break Down
 
 So, I've been looking at what we actually need for creating 3D sounds. It looks like we "technically"
 don't need anything from OpenAL. 
 
 Lets look at the MatLab file that does some 3D signal processing.
 
-###HRTF.mat Files
+### HRTF.mat Files
 ```Matlab
     %use an HRTF (HRIR) to make 3D audio
     HRTFToUse = uigetfile(pwd, 'Please select the HRTF database you would like to use');
@@ -30,7 +30,7 @@ We will parse it and read it into a class.
 
 * Note the first two data values are 3D arrays, this is something we will have to deal with later.
 
-###Azimuth and Elevation
+### Azimuth and Elevation
 ```matlab
     %25 locations
     azimuths = [-80 -65 -55 -45:5:45 55 65 80]
@@ -48,7 +48,7 @@ of the two.
 
 We go ahead and choose two random indices.
 
-#####File Reading
+##### File Reading
 
 ```
     FileReader = dsp.AudioFileReader('Life.wav', 'SamplesPerFrame', 5512, ...
@@ -60,7 +60,7 @@ We go ahead and choose two random indices.
 This is fairly straight forward, we are creating an audio reader for our sound file, which separates it into 
 frames of 5512. We will apply our filter to this *slice* of audio which generates the 3D sound.
 
-###Grabbing The Correct HRTF Data
+### Grabbing The Correct HRTF Data
 ```
     while(~isDone(FileReader))
         wav_left = [];
@@ -89,7 +89,7 @@ Finally, we imported the value `ITD` from our file *CIPIC_58_HRTF.mat*. We can r
 to our azimuth and elevation.
 
 
-###Adding ITD Delay
+### Adding ITD Delay
 ```
         if(aIndex < 13)
         lft = [lft' zeros(size(1:abs(delay)))];
@@ -149,7 +149,7 @@ We can then easily add our delay zeros to the front and back of our HRTFs.
 
 If we add delay to the front of one HRTF we **HAVE** to add the same delay to the back of the opposite HRTF.
 
-###Convolution Time
+### Convolution Time
 ``` 
         sig = step(FileReader);
         sig = sig(:, 1); 
@@ -170,11 +170,11 @@ we use it to apply "filters", for example: *blurs*, *sharpen*, *gray-scale* to i
 idea of looking at every pixel in an image. We have some "magic" function that when applied to all pixels, produces 
 a new picture.
 
-#####Transposing again
+##### Transposing again
 Look and you can see that we transpose our HRTF once again to get the data in the column direction; we do this match our
 signal. 
 
-###Load the Columns Into Our Sound Player, Grab the Next Frame
+### Load the Columns Into Our Sound Player, Grab the Next Frame
 ```
         soundToPlay(:,1) = wav_left;
         soundToPlay(:,2) = wav_right;
