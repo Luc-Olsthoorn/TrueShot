@@ -30,15 +30,53 @@ public class CSVCipic
     public INDArray readHrir_l()
     {
         String fileName = workingDirectory + "/res/hrtfs/cipic/subject_" + subjectName + "/" + subjectName + "_hrir_l.csv";
+        openReader(fileName);
+
+        INDArray hrir_l = read25x50x200();
+
+        closeReader();
+
+        return hrir_l;
+    }
+
+    /**
+     * Reads the hrir_r values from a 58_hrir_r.csv and stores the in a Rank 3 INDArray
+     * @return INDArray Rank 3 filled with hrir_r data
+     */
+    public INDArray readHrir_r()
+    {
+
+        String fileName = workingDirectory + "/res/hrtfs/cipic/subject_" + subjectName + "/" + subjectName + "_hrir_r.csv";
+        openReader(fileName);
+
+        INDArray hrir_r = read25x50x200();
+
+        closeReader();
+
+        return hrir_r;
+    }
+
+    /*
+        Close reader after using.
+     */
+    private void closeReader()
+    {
         try
         {
-            bufferedReader = new BufferedReader(new FileReader(new File(fileName)));
+            bufferedReader.close();
         }
-        catch (FileNotFoundException e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
+    }
 
+    /*
+        Reads a 25x50x200 .csv file. This may be optomized in the future to support reading
+        rank 3 arrays of any shape. IF we use CIPIC then we can stick with this.
+     */
+    private INDArray read25x50x200()
+    {
         Nd4j.setDataType(DataBuffer.Type.DOUBLE);
         INDArray hrir_l = Nd4j.create(25, 50, 200);
         INDArray tempRow = Nd4j.create(50);
@@ -94,34 +132,105 @@ public class CSVCipic
             e.printStackTrace();
         }
 
-        System.out.println(hrir_l.shapeInfoToString());
-        System.out.println(hrir_l.getDouble(24,49,199));
+        return hrir_l;
+    }
 
+    /*
+        Opens the reader, gets rid of some of the clutter with multiple try catches.
+     */
+    private void openReader(String fileName)
+    {
         try
         {
-            bufferedReader.close();
+            bufferedReader = new BufferedReader(new FileReader(new File(fileName)));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Reads the ITD from the respective .csv file.
+     * @return INDArray containing the ITD data
+     */
+    public INDArray readITD()
+    {
+        String fileName = workingDirectory + "/res/hrtfs/cipic/subject_" + subjectName + "/" + subjectName + "_ITD.csv";
+        openReader(fileName);
+        INDArray itdArray = read25x50();
+        closeReader();
+        return itdArray;
+    }
+
+    /*
+        Reads a 25x50 .csv file. This may be optomized in the future to support reading
+        rank 2 arrays of any shape. IF we use CIPIC then we can stick with this.
+     */
+    private INDArray read25x50()
+    {
+        Nd4j.setDataType(DataBuffer.Type.DOUBLE);
+        INDArray itdArray = Nd4j.create(25, 50);
+        INDArray tempRow = Nd4j.create(50);
+        DoubleBuffer buffer = new DoubleBuffer(50);
+        int row = 0, column = 0;
+        try
+        {
+            String line = "";
+            while((line = bufferedReader.readLine()) != null)
+            {
+                String[] itds = line.split(",");
+                for (String delayValue: itds)
+                {
+                    if (column == 49)
+                    {
+                        buffer.put(column, Double.valueOf(delayValue));
+                        tempRow = Nd4j.create(buffer);
+
+                        itdArray.get(NDArrayIndex.point(row), NDArrayIndex.all()).assign(tempRow);
+                        buffer.flush();
+
+                        column = 0;
+                        row++;
+                    }
+                    else
+                    {
+                        buffer.put(column, Double.valueOf(delayValue));
+                        column++;
+                    }
+                }
+            }
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-
-        return hrir_l;
+        return itdArray;
     }
 
-    public INDArray readHrir_r()
+    /**
+     * Reads the OnL data from the respective .csv file.
+     * @return INDArray containing OnL data
+     */
+    public INDArray readOnL()
     {
-
-        return null;
+        String fileName = workingDirectory + "/res/hrtfs/cipic/subject_" + subjectName + "/" + subjectName + "_OnL.csv";
+        openReader(fileName);
+        INDArray OnL = read25x50();
+        closeReader();
+        return OnL;
     }
-    public INDArray readITD()
-    {
 
-        return null;
-    }
-    public INDArray read()
+    /**
+     * Reads the OnR data from the respective .csv file.
+     * @return INDArray containg OnR data
+     */
+    public INDArray readOnR()
     {
-
-        return null;
+        String fileName = workingDirectory + "/res/hrtfs/cipic/subject_" + subjectName + "/" + subjectName + "_OnR.csv";
+        openReader(fileName);
+        INDArray OnR = read25x50();
+        closeReader();
+        return OnR;
     }
 }

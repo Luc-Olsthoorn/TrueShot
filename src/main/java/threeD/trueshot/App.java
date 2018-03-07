@@ -18,6 +18,5 @@ public class App
 
         // Works
         HrtfSubject cipic = Hrtf.getCipicSubject("58");
-        System.out.println(cipic.getHrir_l().getDouble(0,49,199));
     }
 }

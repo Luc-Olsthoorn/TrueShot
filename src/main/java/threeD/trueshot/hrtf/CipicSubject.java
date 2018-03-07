@@ -27,34 +27,43 @@ public class CipicSubject implements HrtfSubject
     private void fillSubject()
     {
         hrir_l = CSVReader.getCipic(name).readHrir_l();
-        // Will add others
+        hrir_r = CSVReader.getCipic(name).readHrir_r();
+        ITD = CSVReader.getCipic(name).readITD();
+        OnL = CSVReader.getCipic(name).readOnL();
+        OnR = CSVReader.getCipic(name).readOnR();
     }
 
+    @Override
     public INDArray getHrir_l()
     {
         return hrir_l;
     }
 
+    @Override
     public INDArray getHrir_r()
     {
         return hrir_r;
     }
 
+    @Override
     public INDArray getITD()
     {
         return ITD;
     }
 
+    @Override
     public String getName()
     {
         return name;
     }
 
+    @Override
     public INDArray getOnL()
     {
         return OnL;
     }
 
+    @Override
     public INDArray getOnR()
     {
         return OnR;
