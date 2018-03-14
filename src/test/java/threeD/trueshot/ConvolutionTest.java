@@ -1,6 +1,7 @@
 package threeD.trueshot;
 
 import junit.framework.TestCase;
+import threeD.trueshot.util.dsp.Convolution;
 
 public class ConvolutionTest extends TestCase
 {
@@ -9,29 +10,22 @@ public class ConvolutionTest extends TestCase
 		super(name);
 	}
 
-
 	public void testConvolve()
 	{
+		double[] convolvedActual = new double[]{ 9, 28, 58, 100, 142, 184, 226, 268, 229, 172, 96};
+
 		double[] signal	= new double[]{1,2,3,4,5,6,7,8};
 		double[] kernel	= new double[]{9,10,11,12};
-		double[] convoled = new double[signal.length + kernel.length];
 
-		for (int i = 0; i < signal.length + kernel.length - 1; i++)
+		int count = 0;
+
+		Convolution convolution = new Convolution(kernel);
+		double[] convoluted = convolution.linearConv(signal);
+		for (int i = 0; i < convoluted.length; i++)
 		{
-			int kmin, kmax, k;
-
-			convoled[i] = 0;
-
-			kmin = (i >= kernel.length - 1) ? i - (kernel.length - 1) : 0;
-			kmax = (i < signal.length - 1) ? i : signal.length - 1;
-
-			for (k = kmin; k <= kmax; k++)
-			{
-				convoled[i] += signal[k] * kernel[i - k];
-			}
+			System.out.print(count + ": " + convoluted[i] + " ");
+			assertEquals(convoluted[i], convolvedActual[i]);
+			count++;
 		}
-
-
 	}
-
 }
