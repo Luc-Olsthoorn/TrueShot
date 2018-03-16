@@ -33,7 +33,7 @@ public class SampleConverterTest extends TestCase
 		int count = 1;
 
 		byte[] sampledData = new byte[BUFFER_SIZE];
-		double[] d_sampledData = new double[BUFFER_SIZE];
+		double[] d_sampledData = new double[(int) (BUFFER_SIZE/4.0)];
 
 		File soundsFile = new File(System.getProperty("user.dir") + "/res/sound/test/nope.wav" );
 		AudioInputStream audioInputStream = null;

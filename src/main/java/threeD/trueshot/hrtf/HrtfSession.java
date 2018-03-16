@@ -20,7 +20,6 @@ public class HrtfSession
 
 	public int azimuthIndex;
 	public int elevationIndex;
-	private int ItdIndex;
 
 	/**
 	 *
@@ -30,8 +29,8 @@ public class HrtfSession
 	 */
 	public HrtfSession(HrtfSubject subject, double azimuth, double elevation)
 	{
-		hrir_l = Nd4j.create(200);
-		hrir_r = Nd4j.create(200);
+		hrir_l = Nd4j.create(1,200);
+		hrir_r = Nd4j.create(1, 200);
 
 		this.subject = subject;
 		this.azimuth = azimuth;
@@ -66,14 +65,30 @@ public class HrtfSession
 		findClosestAngleIndex(false);
 		findClosestAngleIndex(true);
 
-		// Grab my hrirL
-		hrir_l = getHrir_r().get(NDArrayIndex.point(azimuthIndex), NDArrayIndex.point(elevationIndex), NDArrayIndex.all());
-		// Grab my hrirR
+		// Grab Hrir
+		hrir_l = subject.getHrirL().get(NDArrayIndex.point(azimuthIndex), NDArrayIndex.point(elevationIndex), NDArrayIndex.all()).transpose();
+		hrir_r = subject.getHrirR().get(NDArrayIndex.point(azimuthIndex), NDArrayIndex.point(elevationIndex), NDArrayIndex.all()).transpose();
 
+		// Grab delay
+		delay = (int) Math.abs(Math.round(subject.getItd().getDouble(azimuthIndex,elevationIndex)));
 
-		// Grab my delay
+		if (azimuth < 0)
+		{
+			hrir_l = Nd4j.concat(1, hrir_l, Nd4j.zeros(delay));
+			hrir_r = Nd4j.concat(1, Nd4j.zeros(delay), hrir_r);
+		}
+		else
+		{
+			hrir_r = Nd4j.concat(1, hrir_r, Nd4j.zeros(delay));
+			hrir_l = Nd4j.concat(1, Nd4j.zeros(delay), hrir_l);
+		}
+
 	}
 
+	/*
+	 * Finds the closes angle .
+	 * @param findElevation true for elvevation, false for azimuth
+	 */
 	private void findClosestAngleIndex(boolean findElevation)
 	{
 		final int INDEXES_PER_45_DEGREES = 8;
@@ -94,12 +109,12 @@ public class HrtfSession
 			double smallestDiff = Double.MAX_VALUE;
 			for (int i = 0; i < azimuths.length; i++)
 			{
-				if (smallestDiff < Math.abs(azimuths[i] - elevation))
+				if (smallestDiff < Math.abs(azimuths[i] - azimuth))
 				{
 					azimuthIndex = i - 1;
 					break;
 				}
-				smallestDiff = Math.abs(azimuths[i] - elevation);
+				smallestDiff = Math.abs(azimuths[i] - azimuth);
 			}
 		}
 	}
