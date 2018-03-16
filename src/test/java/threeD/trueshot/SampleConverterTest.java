@@ -3,7 +3,7 @@ package threeD.trueshot;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import threeD.trueshot.util.dsp.Converter;
+import threeD.trueshot.lib.util.dsp.Converter;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -35,7 +35,7 @@ public class SampleConverterTest extends TestCase
 		byte[] sampledData = new byte[BUFFER_SIZE];
 		double[] d_sampledData = new double[(int) (BUFFER_SIZE/4.0)];
 
-		File soundsFile = new File(System.getProperty("user.dir") + "/res/sound/test/nope.wav" );
+		File soundsFile = new File(System.getProperty("user.dir") + "/res/sound/test/gong.wav" );
 		AudioInputStream audioInputStream = null;
 
 		try

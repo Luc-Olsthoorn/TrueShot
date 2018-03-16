@@ -1,7 +1,7 @@
 package threeD.trueshot;
 
 import junit.framework.TestCase;
-import threeD.trueshot.util.dsp.Convolution;
+import threeD.trueshot.lib.util.dsp.Convolution;
 
 public class ConvolutionTest extends TestCase
 {

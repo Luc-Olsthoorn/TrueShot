@@ -3,9 +3,9 @@ package threeD.trueshot;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import threeD.trueshot.audio.D3Sound;
-import threeD.trueshot.hrtf.Hrtf;
-import threeD.trueshot.hrtf.HrtfSession;
+import threeD.trueshot.lib.audio.D3Sound;
+import threeD.trueshot.lib.hrtf.Hrtf;
+import threeD.trueshot.lib.hrtf.HrtfSession;
 
 import java.io.File;
 
@@ -23,7 +23,7 @@ public class D3SoundTest extends TestCase
 
 	public void test3DSound()
 	{
-		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), -45, 0);
+		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), 45, 0);
 
 		System.out.println("Azimuth: " + session.getAzimuth());
 		System.out.println("Azimuth index: " + session.azimuthIndex);
@@ -39,7 +39,8 @@ public class D3SoundTest extends TestCase
 		}
 		System.out.println("Hrir L shape: " + session.getHrir_l().shapeInfoToString());
 
-		D3Sound sound = new D3Sound(5512 * 4, new File("res/sound/test/nope.wav"), session);
-		sound.step();
+		// A large buffer size gives better results.
+		D3Sound sound = new D3Sound(5512 * 100, new File("res/sound/test/gong.wav"), session);
+		while(sound.step());
 	}
 }
