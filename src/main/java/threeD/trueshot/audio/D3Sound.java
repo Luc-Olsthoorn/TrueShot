@@ -27,7 +27,7 @@ public class D3Sound
 	{
 		this.session = session;
 		BUFFER_SIZE = bufferSize;
-		rightConvolution = new Convolution(session.getHrir_l().data().asDouble());
+		rightConvolution = new Convolution(session.getHrir_r().data().asDouble());
 		leftConvolution = new Convolution(session.getHrir_l().data().asDouble());
 		try
 		{
@@ -64,10 +64,10 @@ public class D3Sound
 		}
 		if (bytesRead >= 0)
 		{
-			System.out.println(sampledData.length);
 			byte[] convoledData = applyHrtf(sampledData);
+
 			// Writes audio data to the mixer via this source data line.
-			soundLine.write(convoledData, 0,convoledData.length);
+			soundLine.write(convoledData, 0, convoledData.length);
 			return true;
 		}
 		return false;
@@ -80,7 +80,9 @@ public class D3Sound
 
 		// Convolution
 		double[] convolvedLeft = leftConvolution.linearConv(sampleAsDouble);
-		double[] convolvedRight = leftConvolution.linearConv(sampleAsDouble);
+		double[] convolvedRight = rightConvolution.linearConv(sampleAsDouble);
+
+		System.out.println(convolvedLeft[2000] + " Index 2000");
 
 		// Convert back to byte arrays
 		ByteBuffer left = ByteBuffer.wrap(Converter.doubleToSample(convolvedLeft, Converter.Type.WAV));

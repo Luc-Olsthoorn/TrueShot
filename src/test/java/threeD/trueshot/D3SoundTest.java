@@ -23,20 +23,23 @@ public class D3SoundTest extends TestCase
 
 	public void test3DSound()
 	{
-		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), -45, 90);
-
+		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), -45, 0);
 
 		System.out.println("Azimuth: " + session.getAzimuth());
 		System.out.println("Azimuth index: " + session.azimuthIndex);
-		System.out.println("Elevation: " + session.getAzimuth());
+		System.out.println("Elevation: " + session.getElevation());
 		System.out.println("Elevation index: " + session.elevationIndex);
 		System.out.println("Delay: " + session.getDelay());
 		System.out.println("Hrir R: " + session.getHrir_r());
 		System.out.println("Hrir R shape: " + session.getHrir_r().shapeInfoToString());
-		System.out.println("Hrir L: " + session.getHrir_l());
+		System.out.println("Hrir L:");
+		for (double dee: session.getHrir_l().data().asDouble())
+		{
+			System.out.print(dee + ", ");
+		}
 		System.out.println("Hrir L shape: " + session.getHrir_l().shapeInfoToString());
 
 		D3Sound sound = new D3Sound(5512 * 4, new File("res/sound/test/nope.wav"), session);
-		while(sound.step());
+		sound.step();
 	}
 }
