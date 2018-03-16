@@ -25,7 +25,7 @@ public class HrtfTest extends TestCase
      */
     public void testHrir_l()
     {
-        double value = subject.getHrir_l().getDouble(24,49,199);
+        double value = subject.getHrirL().getDouble(24, 49, 199);
         assertEquals(value, 0.00010402);
     }
 
@@ -34,7 +34,7 @@ public class HrtfTest extends TestCase
      */
     public void testHrir_r()
     {
-        double value = subject.getHrir_r().getDouble(24,49,199);
+        double value = subject.getHrirR().getDouble(24, 49, 199);
         assertEquals(value, -3.4013e-05);
     }
 
@@ -43,7 +43,7 @@ public class HrtfTest extends TestCase
      */
     public void testITD()
     {
-        double value = subject.getITD().getDouble(24,49);
+        double value = subject.getItd().getDouble(24, 49);
         assertEquals(value, 27.25);
     }
 
