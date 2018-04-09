@@ -97,7 +97,7 @@ public class D3Sound
 
 		ByteBuffer combined = ByteBuffer.allocate(left.capacity());
 
-		// Grab two bytes from left convolution and two from right convoltion
+		// Grab two bytes from left convolution and two from right convolution
 		while(left.remaining() >= 2)
 		{
 			combined.put(left.get());
