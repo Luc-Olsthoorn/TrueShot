@@ -23,6 +23,12 @@ public class D3Sound
 	AudioFormat audioFormat;
 	DataLine.Info info;
 
+	byte[] convolvedByteArray;
+
+	public byte[] getConvolvedByteArray() {
+		return convolvedByteArray;
+	}
+
 	public D3Sound(int bufferSize, File soundFile, HrtfSession session)
 	{
 		this.session = session;
@@ -74,6 +80,7 @@ public class D3Sound
 		if (bytesRead >= 0)
 		{
 			byte[] convoledData = applyHrtf(sampledData);
+			this.convolvedByteArray = convoledData;
 
 			// Writes audio data to the mixer via this source data line.
 			soundLine.write(convoledData, 0, convoledData.length);
@@ -162,7 +169,7 @@ public class D3Sound
 
 	private void createConvolutioners()
 	{
-		rightConvolution = new Convolution(session.getHrir_r().data().asDouble());
-		leftConvolution = new Convolution(session.getHrir_l().data().asDouble());
+		this.rightConvolution = new Convolution(session.getHrir_r().data().asDouble());
+		this.leftConvolution = new Convolution(session.getHrir_l().data().asDouble());
 	}
 }
