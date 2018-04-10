@@ -2,10 +2,11 @@ package threeD.trueshot.Scenarios;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
-
 import java.io.File;
 
-
+/**
+ * One shooter, one shot at one location.
+ */
 public class singleShot01 {
 
     private  double x;
@@ -29,8 +30,10 @@ public class singleShot01 {
         this.y = y;
         this.ele = ele;
         this.azimuth = Math.atan2(y, x) * (180 / Math.PI);
+
         session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
         sound = new D3Sound(5512 * 100, new File(path), session);
+
         this.convolvedByteArray = setConvolvedBteArray();
     }
 

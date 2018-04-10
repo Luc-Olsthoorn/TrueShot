@@ -23,7 +23,7 @@ public class D3Sound
 	AudioFormat audioFormat;
 	DataLine.Info info;
 
-	byte[] convolvedByteArray;
+	private byte[] convolvedByteArray;
 
 	public byte[] getConvolvedByteArray() {
 		return convolvedByteArray;
@@ -80,10 +80,47 @@ public class D3Sound
 		if (bytesRead >= 0)
 		{
 			byte[] convoledData = applyHrtf(sampledData);
-			this.convolvedByteArray = convoledData;
+
+			//Copy this byte[] to a new byte[]
+			convolvedByteArray = new byte[convoledData.length];
+			System.arraycopy(convoledData, 0, convolvedByteArray, 0, convoledData.length);
+
+
+			for (int i = 0; i < convolvedByteArray.length; i++){
+				int temp = convolvedByteArray[i];
+				if (temp != 0) {
+					System.out.println("First non-zero index is: "+i);
+					break;
+				}
+			}
+
+
+			for (int i = convolvedByteArray.length-1; i > 0 ; i--){
+				int temp = convolvedByteArray[i];
+				if (temp != 0){
+					System.out.println("Last non-zero index is: "+i);
+					break;
+				}
+			}
+
+
+			for (int i = 96104, j = 256; i < convolvedByteArray.length; i++, j++){
+
+				convolvedByteArray[i] = convolvedByteArray[j];
+				if (j == 40255) j =256;
+
+			}
+
+			//This is to prove the byte[] was written from 0 -> tail
+			/*byte[] temp = new byte[convolvedByteArray.length+3];
+			for(int i = 0, j = 96102; i < temp.length && j >=0; i++, j--){
+				temp[i] = convolvedByteArray[j];
+			}*/
+
 
 			// Writes audio data to the mixer via this source data line.
-			soundLine.write(convoledData, 0, convoledData.length);
+			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
+//			soundLine.write(convolvedByteArray, 0, convoledData.length);// This is the modified convolved data
 			return true;
 		}
 		return false;
