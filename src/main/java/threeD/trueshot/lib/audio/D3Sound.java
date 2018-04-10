@@ -77,6 +77,8 @@ public class D3Sound
 		{
 			e.printStackTrace();
 		}
+
+
 		if (bytesRead >= 0)
 		{
 			byte[] convoledData = applyHrtf(sampledData);
@@ -104,10 +106,12 @@ public class D3Sound
 			}
 
 
-			for (int i = 96104, j = 256; i < convolvedByteArray.length; i++, j++){
-
+			for (int i = 177222, j = 70; i < convolvedByteArray.length; i++, j++){
+//				System.arraycopy(convoledData, j, convolvedByteArray, i, 1);
 				convolvedByteArray[i] = convolvedByteArray[j];
-				if (j == 40255) j =256;
+				if (j == 177221) {
+					j =70; i+=1;
+				}
 
 			}
 
@@ -119,8 +123,8 @@ public class D3Sound
 
 
 			// Writes audio data to the mixer via this source data line.
-			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
-//			soundLine.write(convolvedByteArray, 0, convoledData.length);// This is the modified convolved data
+//			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
+			soundLine.write(convolvedByteArray, 0, convoledData.length);// This is the modified convolved data
 			return true;
 		}
 		return false;
