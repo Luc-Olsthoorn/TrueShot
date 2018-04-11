@@ -13,9 +13,10 @@ public class singleShot01 {
     private  double y;
     private  double ele;
     private  double azimuth;
-    private HrtfSession session;
-    private D3Sound sound;
+    public HrtfSession session;
+    public D3Sound sound;
     private byte[] convolvedByteArray;
+    private int bufferSize;
 
 
     /**
@@ -25,16 +26,16 @@ public class singleShot01 {
      * @param ele
      * @param path
      */
-    public singleShot01(double x, double y, double ele, String path){
+    public singleShot01(double x, double y, double ele, String path, int duration){
         this.x = x;
         this.y = y;
         this.ele = ele;
         this.azimuth = Math.atan2(y, x) * (180 / Math.PI);
+        this.bufferSize = duration*177222;//177222 is 1 second of beep
 
         session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
-        sound = new D3Sound(5512 * 100, new File(path), session);
+        sound = new D3Sound(bufferSize, new File(path), session);
 
-        this.convolvedByteArray = setConvolvedBteArray();
     }
 
     private byte[] setConvolvedBteArray() {
@@ -50,12 +51,25 @@ public class singleShot01 {
         return convolvedByteArray;
     }
 
-    public void play(){
+    public void step(){
         sound.step();
+        this.convolvedByteArray = setConvolvedBteArray();
+        modify();
     }
 
 
+    private void modify(){
+        int firstIndex = sound.getfirstNonZero();
+        int lastIndex = sound.getlastNonZero();
 
+        for (int i = lastIndex+1, j = firstIndex; i < convolvedByteArray.length; i++, j++){
+//				System.arraycopy(convoledData, j, convolvedByteArray, i, 1);
+            convolvedByteArray[i] = convolvedByteArray[j];
+            if (j == lastIndex) {
+                j =firstIndex; i+=1;
+            }
+        }
+    }
 
 
 
