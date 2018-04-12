@@ -38,15 +38,20 @@ public class Player {
         double x = 3;
         double y = 0;
         double elevation = 0;
-        String filePath = "res/sound/test/beep.wav";
         int duration = 4;// Seconds
-        //int bufferSize = 4*177222;
-        singleShot01 test = new singleShot01(x, y, elevation, filePath, duration);
-        test.step();
 
-        Player player = new Player(test.sound.audioFormat, test.sound.info);
+        //Create scenarios
+        singleShot01 scenario01 = new singleShot01(x, y, elevation, "res/sound/test/input16.wav", duration);
+        ctnsShot08 scenario08 = new ctnsShot08(x, y, elevation, "res/sound/test/beep.wav", duration);
 
-        byte[] convolvedByteArray = test.getConvolvedByteArray();
+
+
+
+        scenario08.step();
+
+        Player player = new Player(scenario08.sound.audioFormat, scenario08.sound.info);
+
+        byte[] convolvedByteArray = scenario08.getConvolvedByteArray();
         player.play(convolvedByteArray);
 
 
