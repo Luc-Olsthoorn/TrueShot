@@ -192,7 +192,7 @@ public class CoordinateSoundLauncher extends JFrame
         double azimuth = Math.atan2(y, x) * (180 / Math.PI);
 
         HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), 0);
-        D3Sound sound = new D3Sound(5512 * 100, new File("res/sound/test/gong.wav"), session);
+        D3Sound sound = new D3Sound(5512 * 100, new File("res/sound/test/explosion.wav"), session);
 
         mouse.setSession(session);
         mouse.setSound(sound);
