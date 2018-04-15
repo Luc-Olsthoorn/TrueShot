@@ -23,7 +23,7 @@ public class D3SoundTest extends TestCase
 
 	public void test3DSound()
 	{
-		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), 45, 0);
+		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), -45, -43);
 
 		System.out.println("Azimuth: " + session.getAzimuth());
 		System.out.println("Azimuth index: " + session.azimuthIndex);
