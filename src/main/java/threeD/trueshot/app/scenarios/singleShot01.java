@@ -1,13 +1,14 @@
-package threeD.trueshot.Scenarios;
+package threeD.trueshot.app.scenarios;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
 import java.io.File;
 
 /**
- * Continuous shooting at a given location: A shooter is fire continuous from a location.
+ * One shooter, one shot at one location.
  */
-public class ctnsShot08 {
+public class singleShot01 {
+
     private  double x;
     private  double y;
     private  double ele;
@@ -18,13 +19,19 @@ public class ctnsShot08 {
     private int bufferSize;
 
 
-    public ctnsShot08(double x, double y, double ele, String path, int duration){
+    /**
+     *
+     * @param x
+     * @param y
+     * @param ele
+     * @param path
+     */
+    public singleShot01(double x, double y, double ele, String path, int duration){
         this.x = x;
         this.y = y;
         this.ele = ele;
         this.azimuth = Math.atan2(y, x) * (180 / Math.PI);
-        //A single 4*44100 is buffer size about 1 second of beep
-        this.bufferSize = duration*4*44100;
+        this.bufferSize = duration*177222;//177222 is 1 second of beep
 
         session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
         sound = new D3Sound(bufferSize, new File(path), session);
@@ -34,6 +41,7 @@ public class ctnsShot08 {
     private byte[] setConvolvedBteArray() {
         return sound.getConvolvedByteArray();
     }
+
 
     /**
      * Can be invoked to get the convoluted byte[].
@@ -49,6 +57,7 @@ public class ctnsShot08 {
         modify();
     }
 
+
     private void modify(){
         int firstIndex = sound.getfirstNonZero();
         int lastIndex = sound.getlastNonZero();
@@ -61,4 +70,8 @@ public class ctnsShot08 {
             }
         }
     }
+
+
+
+
 }

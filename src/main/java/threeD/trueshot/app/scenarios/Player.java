@@ -1,4 +1,4 @@
-package threeD.trueshot.Scenarios;
+package threeD.trueshot.app.scenarios;
 
 import javax.sound.sampled.*;
 

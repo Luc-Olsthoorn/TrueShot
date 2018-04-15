@@ -1,4 +1,4 @@
-package threeD.trueshot.Scenarios;
+package threeD.trueshot.app.scenarios;
 
 /**
  * Multi-person-shot with identifiable sounds that represent different weapons.

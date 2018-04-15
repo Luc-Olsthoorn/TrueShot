@@ -89,7 +89,7 @@ public class D3Sound
 
 
 			// Writes audio data to the mixer via this source data line.
-//			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
+			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
 			return true;
 		}
 		return false;
