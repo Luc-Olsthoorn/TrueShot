@@ -5,7 +5,9 @@ package threeD.trueshot.app.server;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
+//    	new TrueShot(Integer.valueOf(args[0]));
+	    new TrueShot(24000);
     }
 }
