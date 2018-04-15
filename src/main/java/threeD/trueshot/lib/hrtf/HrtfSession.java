@@ -85,20 +85,20 @@ public class HrtfSession
 
 	/*
 	 * Finds the closes angle .
-	 * @param findElevation true for elvevation, false for azimuth
+	 * @param findElevation true for elevation, false for azimuth
 	 */
 	private void findClosestAngleIndex(boolean findElevation)
 	{
 		final int INDEXES_PER_45_DEGREES = 8;
 		if(findElevation)
 		{
-			if (azimuth > 0)
+			if (elevation > 0)
 			{
-				elevationIndex = (int) Math.round(azimuth / 5.625) + INDEXES_PER_45_DEGREES;
+				elevationIndex = (int) Math.round(elevation / 5.625) + INDEXES_PER_45_DEGREES;
 			}
 			else
 			{
-				elevationIndex = (int) Math.abs(Math.round(azimuth / 5.625));
+				elevationIndex = (int) Math.abs(Math.round(elevation / 5.625));
 			}
 		}
 		else

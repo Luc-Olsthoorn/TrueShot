@@ -29,6 +29,7 @@ public class ctnsShot08 {
         session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
         sound = new D3Sound(bufferSize, new File(path), session);
 
+        step();
     }
 
     private byte[] setConvolvedBteArray() {
@@ -44,9 +45,9 @@ public class ctnsShot08 {
     }
 
     public void step(){
-        sound.step();
-        this.convolvedByteArray = setConvolvedBteArray();
-        modify();
+        sound.step();// Generate convolved array
+        this.convolvedByteArray = setConvolvedBteArray();//Copy convolved array here
+        modify();//Do modification
     }
 
     private void modify(){
