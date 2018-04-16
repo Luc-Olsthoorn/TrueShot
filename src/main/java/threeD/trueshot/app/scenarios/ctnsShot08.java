@@ -32,7 +32,7 @@ public class ctnsShot08 {
     }
 
     private byte[] setConvolvedBteArray() {
-        return sound.getConvolvedByteArray();
+        return sound.getConvolutedByteArray();
     }
 
     /**

@@ -80,5 +80,44 @@ public class D3SoundTest extends TestCase
 		sound.step();
 
 		while(sound.step());
+
+		sound.reset();
+
+		sound.changeAzimuth(-5);
+		sound.step();
+
+		sound.changeAzimuth(-10);
+		sound.step();
+
+		sound.changeAzimuth(-15);
+		sound.step();
+
+		sound.changeAzimuth(-20);
+		sound.step();
+
+		sound.changeAzimuth(-25);
+		sound.step();
+
+		sound.changeAzimuth(-30);
+		sound.step();
+
+		sound.changeAzimuth(-35);
+		sound.step();
+
+		sound.changeAzimuth(-40);
+		sound.step();
+
+		sound.changeAzimuth(-45);
+		sound.step();
+
+		sound.changeAzimuth(-55);
+		sound.step();
+
+		sound.changeAzimuth(-65);
+		sound.step();
+
+		sound.changeAzimuth(-80);
+		sound.step();
+		while(sound.step());
 	}
 }

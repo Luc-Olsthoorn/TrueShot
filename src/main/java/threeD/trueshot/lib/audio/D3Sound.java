@@ -23,12 +23,18 @@ public class D3Sound
 	public AudioFormat audioFormat;
 	public DataLine.Info info;
 
-	private byte[] convolvedByteArray;
+	private byte[] convolutedByteArray;
 
-	public byte[] getConvolvedByteArray() {
-		return convolvedByteArray;
+	public byte[] getConvolutedByteArray() {
+		return convolutedByteArray;
 	}
 
+	/**
+	 * Creates a 3D sound which can be played using the step() method.
+	 * @param bufferSize
+	 * @param soundFile
+	 * @param session
+	 */
 	public D3Sound(int bufferSize, File soundFile, HrtfSession session)
 	{
 		this.session = session;
@@ -46,6 +52,9 @@ public class D3Sound
 		}
 	}
 
+	/*
+		Inits Sounds line
+	 */
 	private void prepareSoundLine() throws UnsupportedAudioFileException, IOException, LineUnavailableException
 	{
 		audioInputStream = AudioSystem.getAudioInputStream(soundFile);
@@ -63,6 +72,32 @@ public class D3Sound
 
 
 	/**
+	 * Reads a buffer size load of data from the sound file and returns the convoluted byte array.
+	 * @return true if data was read, false otherwise
+	 */
+	public byte[] stepSilent()
+	{
+		byte[] sampledData = new byte[BUFFER_SIZE];
+
+		try
+		{
+			bytesRead = audioInputStream.read(sampledData, 0, sampledData.length);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		if (bytesRead >= 0)
+		{
+			byte[] convolutedData = applyHrtf(sampledData);
+			//Copy this byte[] to a new byte[]
+			convolutedByteArray = new byte[convolutedData.length];
+			System.arraycopy(convolutedData, 0, convolutedByteArray, 0, convolutedData.length);
+		}
+		return convolutedByteArray;
+	}
+
+	/**
 	 * Reads a buffer size load of data from the sound file and writes to sound line.
 	 * @return true if data was read, false otherwise
 	 */
@@ -78,15 +113,13 @@ public class D3Sound
 			e.printStackTrace();
 		}
 
-
 		if (bytesRead >= 0)
 		{
 			byte[] convoledData = applyHrtf(sampledData);
 
 			//Copy this byte[] to a new byte[]
-			convolvedByteArray = new byte[convoledData.length];
-			System.arraycopy(convoledData, 0, convolvedByteArray, 0, convoledData.length);
-
+			convolutedByteArray = new byte[convoledData.length];
+			System.arraycopy(convoledData, 0, convolutedByteArray, 0, convoledData.length);
 
 			// Writes audio data to the mixer via this source data line.
 			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
@@ -95,6 +128,9 @@ public class D3Sound
 		return false;
 	}
 
+	/*
+		Applies convolution.
+	 */
 	private byte[] applyHrtf(byte[] sampledData)
 	{
 		// bytes to double
@@ -182,8 +218,8 @@ public class D3Sound
 
 	public int getfirstNonZero(){
 		int firstNonZero = 0;
-		for (int i = 0; i < convolvedByteArray.length; i++){
-			int temp = convolvedByteArray[i];
+		for (int i = 0; i < convolutedByteArray.length; i++){
+			int temp = convolutedByteArray[i];
 			if (temp != 0) {
 				System.out.println("First non-zero index is: "+i);
 				firstNonZero = i;
@@ -195,8 +231,8 @@ public class D3Sound
 
 	public int getlastNonZero(){
 		int lastNonZero = 0;
-		for (int i = convolvedByteArray.length-1; i > 0 ; i--){
-			int temp = convolvedByteArray[i];
+		for (int i = convolutedByteArray.length-1; i > 0 ; i--){
+			int temp = convolutedByteArray[i];
 			if (temp != 0){
 				System.out.println("Last non-zero index is: "+i);
 				lastNonZero = i;
@@ -210,9 +246,9 @@ public class D3Sound
 		int firstIndex = getfirstNonZero();
 		int lastIndex = getlastNonZero();
 
-		for (int i = lastIndex+1, j = firstIndex; i < convolvedByteArray.length; i++, j++){
-//				System.arraycopy(convoledData, j, convolvedByteArray, i, 1);
-			convolvedByteArray[i] = convolvedByteArray[j];
+		for (int i = lastIndex+1, j = firstIndex; i < convolutedByteArray.length; i++, j++){
+//				System.arraycopy(convoledData, j, convolutedByteArray, i, 1);
+			convolutedByteArray[i] = convolutedByteArray[j];
 			if (j == lastIndex) {
 				j =firstIndex; i+=1;
 			}

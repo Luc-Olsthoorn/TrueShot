@@ -39,7 +39,7 @@ public class singleShot01 {
     }
 
     private byte[] setConvolvedBteArray() {
-        return sound.getConvolvedByteArray();
+        return sound.getConvolutedByteArray();
     }
 
 
