@@ -44,13 +44,13 @@ public class D3Mixer
 	 */
 	public byte[] mix()
 	{
-		byte[] mixedArray = sounds.get(0).stepSilent();
+		byte[] mixedArray = sounds.get(0).getConvolutedByteArray();
 		boolean newSmaller = false;
 
 		// For each sound
 		for (D3Sound sound: sounds.subList(1, sounds.size()))
 		{
-			byte[] soundArray = sound.stepSilent();
+			byte[] soundArray = sound.getConvolutedByteArray();
 			int smaller;
 			int larger;
 
@@ -108,6 +108,18 @@ public class D3Mixer
 	public int getMixedLength()
 	{
 		return mixedLength;
+	}
+
+	/**
+	 * Steps all the sounds. When you don't want to individually step them yourself.
+	 */
+	public void stepAll()
+	{
+		for (D3Sound sound:
+		     sounds)
+		{
+			sound.stepSilent();
+		}
 	}
 }
 

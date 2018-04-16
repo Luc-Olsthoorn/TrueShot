@@ -62,9 +62,13 @@ public class TestMixer
 			soundLine = (SourceDataLine) AudioSystem.getLine(info);
 			soundLine.open(audioFormat);
 			soundLine.start();
+			mixer.stepAll();
 			soundLine.write(mixer.mix(),0, mixer.getMixedLength());
+			mixer.stepAll();
 			soundLine.write(mixer.mix(),0, mixer.getMixedLength());
+			mixer.stepAll();
 			soundLine.write(mixer.mix(),0, mixer.getMixedLength());
+			mixer.stepAll();
 			soundLine.write(mixer.mix(),0, mixer.getMixedLength());
 		} catch (LineUnavailableException e)
 		{
