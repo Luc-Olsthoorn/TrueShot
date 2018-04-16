@@ -22,7 +22,6 @@ public class RotationEvent
 
 	private void calculateAzimuth()
 	{
-
 	}
 
 	private void calculateElevation()
