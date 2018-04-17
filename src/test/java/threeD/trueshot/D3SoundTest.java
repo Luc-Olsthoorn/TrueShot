@@ -23,7 +23,7 @@ public class D3SoundTest extends TestCase
 
 	public void test3DSound()
 	{
-		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), 90, 0);
+		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), -34, 180);
 
 		System.out.println("Azimuth: " + session.getAzimuth());
 		System.out.println("Azimuth index: " + session.azimuthIndex);
@@ -40,7 +40,7 @@ public class D3SoundTest extends TestCase
 		System.out.println("Hrir L shape: " + session.getHrir_l().shapeInfoToString());
 
 		// A large buffer size gives better results.
-		D3Sound sound = new D3Sound(44100 * 8, new File("res/sound/test/cello-down.wav"), session);
+		D3Sound sound = new D3Sound(44100 * 20, new File("res/sound/test/cello-down.wav"), session);
 		sound.step();
 
 		sound.changeAzimuth(65);

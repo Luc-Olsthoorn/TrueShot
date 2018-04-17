@@ -67,7 +67,7 @@ public class TrueShot
 			case "2":
 				break;
 			case "3":
-				currentScenario = new Scenario3();
+//				currentScenario = new Scenario3();
 				break;
 			case "4":
 				break;

@@ -31,9 +31,10 @@ public class Scenario3 implements TrueScenario
 		Three shooters.
 	 */
 	private ShotCoord[] shotCoords  = {
-			new ShotCoord(1,2,0),
-			new ShotCoord(-5,2,0),
-			new ShotCoord(-20,10,0)
+			new ShotCoord(4,4,0),
+			new ShotCoord(-4, 2,0),
+			new ShotCoord(-5,-3,0),
+			new ShotCoord(5,0,0)
 	};
 
 	/**
@@ -56,6 +57,11 @@ public class Scenario3 implements TrueScenario
 	@Override
 	public byte[] buildNextStep(RotationEvent newRotation)
 	{
+		int index = 0;
+		for (D3Sound sound:
+		     sounds)
+		{
+		}
 		// Calculate the next correct azimuth and elevation values for the given rotation
 		// Against the coordinates of the shots
 
