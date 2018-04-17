@@ -36,6 +36,7 @@ public class singleShot01 {
         session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
         sound = new D3Sound(bufferSize, new File(path), session);
 
+        step();
     }
 
     private byte[] setConvolvedBteArray() {
@@ -54,22 +55,10 @@ public class singleShot01 {
     public void step(){
         sound.step();
         this.convolvedByteArray = setConvolvedBteArray();
-        modify();
     }
 
 
-    private void modify(){
-        int firstIndex = sound.getfirstNonZero();
-        int lastIndex = sound.getlastNonZero();
 
-        for (int i = lastIndex+1, j = firstIndex; i < convolvedByteArray.length; i++, j++){
-//				System.arraycopy(convoledData, j, convolvedByteArray, i, 1);
-            convolvedByteArray[i] = convolvedByteArray[j];
-            if (j == lastIndex) {
-                j =firstIndex; i+=1;
-            }
-        }
-    }
 
 
 
