@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 
 public class D3Sound
 {
-	HrtfSession session;
+	public HrtfSession session;
 	Convolution rightConvolution;
 	Convolution leftConvolution;
 
@@ -20,9 +20,21 @@ public class D3Sound
 	SourceDataLine soundLine;
 	File soundFile;
 	AudioInputStream audioInputStream;
-	AudioFormat audioFormat;
-	DataLine.Info info;
+	public AudioFormat audioFormat;
+	public DataLine.Info info;
 
+	private byte[] convolutedByteArray;
+
+	public byte[] getConvolutedByteArray() {
+		return convolutedByteArray;
+	}
+
+	/**
+	 * Creates a 3D sound which can be played using the step() method.
+	 * @param bufferSize
+	 * @param soundFile
+	 * @param session
+	 */
 	public D3Sound(int bufferSize, File soundFile, HrtfSession session)
 	{
 		this.session = session;
@@ -40,6 +52,9 @@ public class D3Sound
 		}
 	}
 
+	/*
+		Inits Sounds line
+	 */
 	private void prepareSoundLine() throws UnsupportedAudioFileException, IOException, LineUnavailableException
 	{
 		audioInputStream = AudioSystem.getAudioInputStream(soundFile);
@@ -57,6 +72,32 @@ public class D3Sound
 
 
 	/**
+	 * Reads a buffer size load of data from the sound file and returns the convoluted byte array.
+	 * @return true if data was read, false otherwise
+	 */
+	public byte[] stepSilent()
+	{
+		byte[] sampledData = new byte[BUFFER_SIZE];
+
+		try
+		{
+			bytesRead = audioInputStream.read(sampledData, 0, sampledData.length);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		if (bytesRead >= 0)
+		{
+			byte[] convolutedData = applyHrtf(sampledData);
+			//Copy this byte[] to a new byte[]
+			convolutedByteArray = new byte[convolutedData.length];
+			System.arraycopy(convolutedData, 0, convolutedByteArray, 0, convolutedData.length);
+		}
+		return convolutedByteArray;
+	}
+
+	/**
 	 * Reads a buffer size load of data from the sound file and writes to sound line.
 	 * @return true if data was read, false otherwise
 	 */
@@ -71,17 +112,25 @@ public class D3Sound
 		{
 			e.printStackTrace();
 		}
+
 		if (bytesRead >= 0)
 		{
 			byte[] convoledData = applyHrtf(sampledData);
 
+			//Copy this byte[] to a new byte[]
+			convolutedByteArray = new byte[convoledData.length];
+			System.arraycopy(convoledData, 0, convolutedByteArray, 0, convoledData.length);
+
 			// Writes audio data to the mixer via this source data line.
-			soundLine.write(convoledData, 0, convoledData.length);
+			soundLine.write(convoledData, 0, convoledData.length); //This is the original convolved data
 			return true;
 		}
 		return false;
 	}
 
+	/*
+		Applies convolution.
+	 */
 	private byte[] applyHrtf(byte[] sampledData)
 	{
 		// bytes to double
@@ -97,7 +146,7 @@ public class D3Sound
 
 		ByteBuffer combined = ByteBuffer.allocate(left.capacity());
 
-		// Grab two bytes from left convolution and two from right convoltion
+		// Grab two bytes from left convolution and two from right convolution
 		while(left.remaining() >= 2)
 		{
 			combined.put(left.get());
@@ -156,13 +205,53 @@ public class D3Sound
 	 */
 	public void changeElevation(double elevation)
 	{
-		session.setAzimuth(elevation);
+		session.setElevation(elevation);
 		createConvolutioners();
 	}
 
 	private void createConvolutioners()
 	{
-		rightConvolution = new Convolution(session.getHrir_r().data().asDouble());
-		leftConvolution = new Convolution(session.getHrir_l().data().asDouble());
+		this.rightConvolution = new Convolution(session.getHrir_r().data().asDouble());
+		this.leftConvolution = new Convolution(session.getHrir_l().data().asDouble());
 	}
+
+
+	public int getfirstNonZero(){
+		int firstNonZero = 0;
+		for (int i = 0; i < convolutedByteArray.length; i++){
+			int temp = convolutedByteArray[i];
+			if (temp != 0) {
+				System.out.println("First non-zero index is: "+i);
+				firstNonZero = i;
+				break;
+			}
+		}
+		return firstNonZero;
+	}
+
+	public int getlastNonZero(){
+		int lastNonZero = 0;
+		for (int i = convolutedByteArray.length-1; i > 0 ; i--){
+			int temp = convolutedByteArray[i];
+			if (temp != 0){
+				System.out.println("Last non-zero index is: "+i);
+				lastNonZero = i;
+				break;
+			}
+		}
+		return lastNonZero;
+	}
+
+	/*private void modify(){
+		int firstIndex = getfirstNonZero();
+		int lastIndex = getlastNonZero();
+
+		for (int i = lastIndex+1, j = firstIndex; i < convolutedByteArray.length; i++, j++){
+//				System.arraycopy(convoledData, j, convolutedByteArray, i, 1);
+			convolutedByteArray[i] = convolutedByteArray[j];
+			if (j == lastIndex) {
+				j =firstIndex; i+=1;
+			}
+		}
+	}*/
 }

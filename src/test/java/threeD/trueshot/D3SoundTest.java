@@ -23,7 +23,7 @@ public class D3SoundTest extends TestCase
 
 	public void test3DSound()
 	{
-		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), 45, 0);
+		HrtfSession session = new HrtfSession(Hrtf.getCipicSubject("58"), -34, 180);
 
 		System.out.println("Azimuth: " + session.getAzimuth());
 		System.out.println("Azimuth index: " + session.azimuthIndex);
@@ -33,14 +33,91 @@ public class D3SoundTest extends TestCase
 		System.out.println("Hrir R: " + session.getHrir_r());
 		System.out.println("Hrir R shape: " + session.getHrir_r().shapeInfoToString());
 		System.out.println("Hrir L:");
-		for (double dee: session.getHrir_l().data().asDouble())
+		for (double dee : session.getHrir_l().data().asDouble())
 		{
 			System.out.print(dee + ", ");
 		}
 		System.out.println("Hrir L shape: " + session.getHrir_l().shapeInfoToString());
 
 		// A large buffer size gives better results.
-		D3Sound sound = new D3Sound(5512 * 100, new File("res/sound/test/gong.wav"), session);
+		D3Sound sound = new D3Sound(44100 * 20, new File("res/sound/test/cello-down.wav"), session);
+		sound.step();
+
+		sound.changeAzimuth(65);
+		sound.step();
+
+		sound.changeAzimuth(55);
+		sound.step();
+
+		sound.changeAzimuth(45);
+		sound.step();
+
+		sound.changeAzimuth(40);
+		sound.step();
+
+		sound.changeAzimuth(35);
+		sound.step();
+
+		sound.changeAzimuth(30);
+		sound.step();
+
+		sound.changeAzimuth(25);
+		sound.step();
+
+		sound.changeAzimuth(20);
+		sound.step();
+
+		sound.changeAzimuth(15);
+		sound.step();
+
+		sound.changeAzimuth(10);
+		sound.step();
+
+		sound.changeAzimuth(5);
+		sound.step();
+
+		sound.changeAzimuth(0);
+		sound.step();
+
+		while(sound.step());
+
+		sound.reset();
+
+		sound.changeAzimuth(-5);
+		sound.step();
+
+		sound.changeAzimuth(-10);
+		sound.step();
+
+		sound.changeAzimuth(-15);
+		sound.step();
+
+		sound.changeAzimuth(-20);
+		sound.step();
+
+		sound.changeAzimuth(-25);
+		sound.step();
+
+		sound.changeAzimuth(-30);
+		sound.step();
+
+		sound.changeAzimuth(-35);
+		sound.step();
+
+		sound.changeAzimuth(-40);
+		sound.step();
+
+		sound.changeAzimuth(-45);
+		sound.step();
+
+		sound.changeAzimuth(-55);
+		sound.step();
+
+		sound.changeAzimuth(-65);
+		sound.step();
+
+		sound.changeAzimuth(-80);
+		sound.step();
 		while(sound.step());
 	}
 }
