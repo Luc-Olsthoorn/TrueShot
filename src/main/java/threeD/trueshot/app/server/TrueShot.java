@@ -1,7 +1,7 @@
 package threeD.trueshot.app.server;
 
 import threeD.trueshot.app.scenarios.*;
-import threeD.trueshot.app.util.RotationEvent;
+import threeD.trueshot.app.util.TrueCoordinates;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -32,14 +32,14 @@ public class TrueShot
 			{
 				// Blocks waiting for scenario number
 				startScenario(clientConnection.getScenarioNumber());
-				RotationEvent rotationEvent = null;
+				TrueCoordinates rotationCoordinates = null;
 				byte[] nextStep = null;
 
 				// While scenario is not complete
-				while((rotationEvent = clientConnection.waitRotationEvent()) != null)
+				while((rotationCoordinates = clientConnection.waitRotationEvent()) != null)
 				{
 					// Pass this new rotation to our scenario
-					nextStep = currentScenario.buildNextStep(rotationEvent);
+					nextStep = currentScenario.buildNextStep(rotationCoordinates);
 
 					// Send the resulting byte array from the rotation
 					clientConnection.sendNextStep(nextStep);

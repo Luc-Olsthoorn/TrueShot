@@ -1,6 +1,6 @@
 package threeD.trueshot.app.server;
 
-import threeD.trueshot.app.util.RotationEvent;
+import threeD.trueshot.app.util.TrueCoordinates;
 
 import java.net.Socket;
 
@@ -29,7 +29,7 @@ public class ClientConnection
 	 * This Blocks waiting for next set of cordinates
 	 * @return
 	 */
-	public RotationEvent waitRotationEvent()
+	public TrueCoordinates waitRotationEvent()
 	{
 		return null;
 	}

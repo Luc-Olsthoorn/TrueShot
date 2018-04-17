@@ -4,7 +4,7 @@ package threeD.trueshot.app.util;
  * Grouping for a shooters locations.
  * Made everything public for easier readability
  */
-public class ShotCoord
+public class TrueCoordinates
 {
 	public int x;
 	public int y;
@@ -18,7 +18,7 @@ public class ShotCoord
 	 * @param y
 	 * @param z
 	 */
-	public ShotCoord(int x, int y, int z)
+	public TrueCoordinates(int x, int y, int z)
 	{
 		this.x = x;
 		this.y = y;

@@ -1,6 +1,6 @@
 package threeD.trueshot.app.scenarios;
 
-import threeD.trueshot.app.util.RotationEvent;
+import threeD.trueshot.app.util.TrueCoordinates;
 
 /**
  * Hard code everything you need for the scenario
@@ -13,5 +13,5 @@ import threeD.trueshot.app.util.RotationEvent;
  */
 public interface TrueScenario
 {
-	public byte[] buildNextStep(RotationEvent newRotation);
+	public byte[] buildNextStep(TrueCoordinates newRotation);
 }

@@ -3,7 +3,7 @@ package threeD.trueshot;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import threeD.trueshot.app.util.ShotCoord;
+import threeD.trueshot.app.util.TrueCoordinates;
 
 public class TestCoordinateConversion extends TestCase
 {
@@ -30,12 +30,12 @@ public class TestCoordinateConversion extends TestCase
 	 */
 	public void testConversion()
 	{
-		ShotCoord cord1 = new ShotCoord(4, 4, 0);
-		ShotCoord cord2	= new ShotCoord(-4, 2,0);
-		ShotCoord cord3 = new ShotCoord(-5,-3,0);
-		ShotCoord cord4 = new ShotCoord(5,0,0);
-		ShotCoord cord5 = new ShotCoord(0,5,0);
-		ShotCoord cord6 = new ShotCoord(5,-5,0);
+		TrueCoordinates cord1 = new TrueCoordinates(4, 4, 0);
+		TrueCoordinates cord2	= new TrueCoordinates(-4, 2, 0);
+		TrueCoordinates cord3 = new TrueCoordinates(-5, -3, 0);
+		TrueCoordinates cord4 = new TrueCoordinates(5, 0, 0);
+		TrueCoordinates cord5 = new TrueCoordinates(0, 5, 0);
+		TrueCoordinates cord6 = new TrueCoordinates(5, -5, 0);
 
 		// Initial angles
 		System.out.println(cord1.azimuth);
@@ -51,8 +51,8 @@ public class TestCoordinateConversion extends TestCase
 		System.out.println(cord3.getAdjustedElevation());
 
 		// Now to add some head movement
-//		ShotCoord headLeft = new ShotCoord(-4, 4,0);
-		ShotCoord headLeft = new ShotCoord(4, 4,0);
+//		TrueCoordinates headLeft = new TrueCoordinates(-4, 4,0);
+		TrueCoordinates headLeft = new TrueCoordinates(4, 4, 0);
 
 		System.out.println(headLeft.azimuth);
 		cord1.setOrigin(headLeft.azimuth);

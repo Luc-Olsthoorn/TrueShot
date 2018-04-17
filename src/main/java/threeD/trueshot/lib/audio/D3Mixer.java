@@ -14,6 +14,7 @@ public class D3Mixer
 	 */
 	public D3Mixer(ArrayList<D3Sound> sounds)
 	{
+
 		this.sounds = sounds;
 		mixedLength = 0;
 	}
@@ -72,7 +73,7 @@ public class D3Mixer
 			// increase our mixed sample length to fit this
 			if(mixedArray.length < larger)
 			{
-				Arrays.copyOf(mixedArray, larger);
+				mixedArray = Arrays.copyOf(mixedArray, larger);
 			}
 
 			for (int i = 0; i < smaller; i += 2)

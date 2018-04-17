@@ -1,6 +1,6 @@
 package threeD.trueshot.app.scenarios;
 
-import threeD.trueshot.app.util.RotationEvent;
+import threeD.trueshot.app.util.TrueCoordinates;
 
 /**
  * Similar Gunfire Locations
@@ -9,7 +9,7 @@ import threeD.trueshot.app.util.RotationEvent;
 public class Scenario6 implements TrueScenario
 {
 	@Override
-	public byte[] buildNextStep(RotationEvent newRotation)
+	public byte[] buildNextStep(TrueCoordinates newRotation)
 	{
 		return new byte[0];
 	}

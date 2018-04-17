@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 
 public class D3Sound
 {
-	HrtfSession session;
+	public HrtfSession session;
 	Convolution rightConvolution;
 	Convolution leftConvolution;
 
@@ -205,7 +205,7 @@ public class D3Sound
 	 */
 	public void changeElevation(double elevation)
 	{
-		session.setAzimuth(elevation);
+		session.setElevation(elevation);
 		createConvolutioners();
 	}
 
