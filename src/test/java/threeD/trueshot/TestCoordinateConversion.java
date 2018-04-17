@@ -30,7 +30,6 @@ public class TestCoordinateConversion extends TestCase
 	 */
 	public void testConversion()
 	{
-
 		ShotCoord cord1 = new ShotCoord(4, 4, 0);
 		ShotCoord cord2	= new ShotCoord(-4, 2,0);
 		ShotCoord cord3 = new ShotCoord(-5,-3,0);
@@ -44,7 +43,12 @@ public class TestCoordinateConversion extends TestCase
 		System.out.println(cord3.azimuth);
 		System.out.println(cord4.azimuth);
 		System.out.println(cord5.azimuth);
+		System.out.println(cord6.azimuth + "\n");
 
+		System.out.println(cord3.toString());
+		System.out.println(cord3.azimuth);
+		System.out.println(cord3.getAdjustedAzimuth());
+		System.out.println(cord3.getAdjustedElevation());
 
 		// Now to add some head movement
 //		ShotCoord headLeft = new ShotCoord(-4, 4,0);
