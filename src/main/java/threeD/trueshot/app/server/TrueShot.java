@@ -72,7 +72,7 @@ public class TrueShot
 			case "4":
 				break;
 			case "5":
-				currentScenario = new Scenario5();
+				currentScenario = new Scenario5("58");
 				break;
 			case "6":
 				currentScenario = new Scenario6("58");
@@ -83,7 +83,7 @@ public class TrueShot
 			case "8":
 				break;
 			case "9":
-				currentScenario = new Scenario9();
+				currentScenario = new Scenario9("58");
 				break;
 			default:
 		}

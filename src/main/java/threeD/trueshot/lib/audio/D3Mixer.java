@@ -52,6 +52,7 @@ public class D3Mixer
 		for (D3Sound sound: sounds.subList(1, sounds.size()))
 		{
 			byte[] soundArray = sound.getConvolutedByteArray();
+			if(soundArray == null) break;
 			int smaller;
 			int larger;
 

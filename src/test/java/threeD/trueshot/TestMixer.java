@@ -1,8 +1,6 @@
 package threeD.trueshot;
 
-import threeD.trueshot.app.scenarios.Scenario3;
-import threeD.trueshot.app.scenarios.Scenario6;
-import threeD.trueshot.app.scenarios.TrueScenario;
+import threeD.trueshot.app.scenarios.*;
 import threeD.trueshot.app.util.TrueCoordinates;
 import threeD.trueshot.lib.audio.D3Mixer;
 import threeD.trueshot.lib.audio.D3Sound;
@@ -19,11 +17,11 @@ public class TestMixer
 	public TestMixer()
 	{
 //		testMixTwo();
-		testScenario3();
-//		testScenario6();
+//		testScenario3();
+		testScenario(5);
 	}
 
-	private void testScenario6(int scenario)
+	private void testScenario(int scenario)
 	{
 		TrueScenario scenarioToPlay = null;
 		switch (scenario)
@@ -38,22 +36,22 @@ public class TestMixer
 				scenarioToPlay = new Scenario3("58");
 				break;
 			case 4:
-				scenarioToPlay = new Scenario6("58");
+//				scenarioToPlay = new Scenario4("58");
 				break;
 			case 5:
-				scenarioToPlay = new Scenario6("58");
+				scenarioToPlay = new Scenario5("58");
 				break;
 			case 6:
 				scenarioToPlay = new Scenario6("58");
 				break;
 			case 7:
-				scenarioToPlay = new Scenario6("58");
+				scenarioToPlay = new Scenario7("58");
 				break;
 			case 8:
-				scenarioToPlay = new Scenario6("58");
+//				scenarioToPlay = new Scenario8("58");
 				break;
 			case 9:
-				scenarioToPlay = new Scenario6("58");
+				scenarioToPlay = new Scenario9("58");
 				break;
 				default:
 					break;
@@ -78,6 +76,8 @@ public class TestMixer
 			soundLine = (SourceDataLine) AudioSystem.getLine(info);
 			soundLine.open(audioFormat);
 			soundLine.start();
+			soundLine.write(scenarioToPlay.buildNextStep(new TrueCoordinates(0,0,0)), 0, scenarioToPlay.scenarioInfo().mixer.getMixedLength());
+			soundLine.write(scenarioToPlay.buildNextStep(new TrueCoordinates(0,0,0)), 0, scenarioToPlay.scenarioInfo().mixer.getMixedLength());
 			soundLine.write(scenarioToPlay.buildNextStep(new TrueCoordinates(0,0,0)), 0, scenarioToPlay.scenarioInfo().mixer.getMixedLength());
 		} catch (LineUnavailableException e)
 		{

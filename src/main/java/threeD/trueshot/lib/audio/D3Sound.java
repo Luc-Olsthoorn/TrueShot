@@ -61,7 +61,6 @@ public class D3Sound
 	private void readHeader(File soundFile) throws IOException
 	{
 		FileInputStream stream = new FileInputStream(soundFile);
-		stream.mark(50);
 		stream.skip(16);
 
 		byte[] chunk = new byte[4];
@@ -84,7 +83,8 @@ public class D3Sound
 		}
 
 		header = new byte[headerSize];
-		stream.reset();
+		stream.close();
+		stream = new FileInputStream(soundFile);
 		int headerRead = stream.read(header);
 	}
 
