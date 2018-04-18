@@ -7,7 +7,7 @@ class Main{
 		let body = $('body');
 		let socketInterface = new SocketInterface(url);
 		let coordinateInterface = new CoordinateInterface();
-		let intervalTime = 200;
+		let intervalTime = 1000;
 		let numSegmentsDelay = 10;
 		let audioStreamer = new AudioStreamer(intervalTime, numSegmentsDelay);
 		socketInterface.getSound((file)=>{
@@ -80,6 +80,7 @@ class AudioStreamer{
 		});
 	}
 	startStream(callback){
+		console.log("starting Stream");
 		this.on = true; 
 		this.timer = setInterval(()=>{ 
 			//console.log(this.buffer.length);

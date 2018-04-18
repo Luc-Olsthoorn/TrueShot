@@ -22,8 +22,9 @@ public class SocketServer {
         config.setMaxFramePayloadLength(1024 * 1024);
         config.setMaxHttpContentLength(1024 * 1024);
         server = new SocketIOServer(config);
+        currentScenario = new Scenario3("58");
     }
-
+    //DEPRECATED FOR NOW
     public void newScenarioListener()
     {
         server.addEventListener("updateScenario", byte[].class, new DataListener<byte[]>() {
@@ -38,14 +39,15 @@ public class SocketServer {
         server.addEventListener("updateCoordinates", byte[].class, new DataListener<byte[]>() {
             @Override
             public void onData(SocketIOClient client, byte[] data, AckRequest ackRequest) {
-//                byte[] audio = soundAnalyzer.newCoordinates();
+                System.out.println("Recieved new x,y,z, processing...");
                 byte[] audio = currentScenario.buildNextStep(new TrueCoordinates(1,1,1));
                 client.sendEvent("sound", audio);
-
+                System.out.println("Sent");
             }
         });
     }
     public void run(){
+        System.out.println("Socket Server attempting to run");
         try{
             server.start();
             Thread.sleep(Integer.MAX_VALUE);
