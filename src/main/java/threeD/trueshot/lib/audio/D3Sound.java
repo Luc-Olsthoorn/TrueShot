@@ -6,23 +6,27 @@ import threeD.trueshot.lib.util.dsp.Convolution;
 
 import javax.sound.sampled.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class D3Sound
 {
+	int WAVE_HEADER_SIZE = 44;
+
 	public HrtfSession session;
 	Convolution rightConvolution;
 	Convolution leftConvolution;
 
-	int BUFFER_SIZE;
-	int bytesRead;
-	SourceDataLine soundLine;
-	File soundFile;
-	AudioInputStream audioInputStream;
+	private int BUFFER_SIZE;
+	private int bytesRead;
+	private SourceDataLine soundLine;
+	private File soundFile;
+	private AudioInputStream audioInputStream;
 	public AudioFormat audioFormat;
 	public DataLine.Info info;
-
+	private byte[] header;
 	private byte[] convolutedByteArray;
 
 	public byte[] getConvolutedByteArray() {
@@ -44,6 +48,12 @@ public class D3Sound
 		try
 		{
 			prepareSoundLine();
+			FileInputStream stream = new FileInputStream(soundFile);
+			int byteRead = stream.read(header);
+			if(bytesRead != WAVE_HEADER_SIZE)
+			{
+				System.out.println("Failed to read header");
+			}
 		} catch (LineUnavailableException
 				| IOException
 				| UnsupportedAudioFileException e)
@@ -240,6 +250,19 @@ public class D3Sound
 			}
 		}
 		return lastNonZero;
+	}
+
+	/**
+	 * Returns the sound with the header attached. This may be needed when a
+	 * file has not been specified.
+	 * @return the header + the convoluted sound.
+	 */
+	public byte[] soundWithHeader()
+	{
+		ByteBuffer buffer = ByteBuffer.allocate(convolutedByteArray.length + WAVE_HEADER_SIZE);
+		buffer.put(convolutedByteArray);
+		buffer.put(header);
+		return buffer.array();
 	}
 
 	/*private void modify(){
