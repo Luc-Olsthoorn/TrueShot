@@ -23,7 +23,7 @@ public class Scenario6 implements TrueScenario
 	private String[] soundsFiles =
 			{
 					"res/sound/test/cat.wav",
-					"res/sound/test/crunch.wav"
+					"res/sound/test/cat.wav"
 			};
 
 	/*
@@ -94,5 +94,13 @@ public class Scenario6 implements TrueScenario
 
 		// Step all for this scenario and feed to server.
 		return mixer.mix();
+	}
+
+	@Override
+	public ScenarioInfo scenarioInfo()
+	{
+		ScenarioInfo info = new ScenarioInfo();
+		info.mixer = this.mixer;
+		return info;
 	}
 }

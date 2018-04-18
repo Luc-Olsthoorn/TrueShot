@@ -10,10 +10,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class D3Sound
 {
-	private final int WAVE_HEADER_SIZE = 44;
 	private double attenuation;
 	private Convolution rightConvolution;
 	private  Convolution leftConvolution;
@@ -22,7 +22,7 @@ public class D3Sound
 	private SourceDataLine soundLine;
 	private File soundFile;
 	private AudioInputStream audioInputStream;
-	private byte[] header = new byte[WAVE_HEADER_SIZE];
+	private byte[] header;
 	private byte[] convolutedByteArray;
 
 	// These can be private, I did it for testing
@@ -46,18 +46,46 @@ public class D3Sound
 		try
 		{
 			prepareSoundLine();
-			FileInputStream stream = new FileInputStream(soundFile);
-			int headerRead = stream.read(header);
-			if(headerRead != WAVE_HEADER_SIZE)
-			{
-				System.out.println("Failed to read header");
-			}
+			readHeader(soundFile);
 		} catch (LineUnavailableException
 				| IOException
 				| UnsupportedAudioFileException e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	/*
+		Reads the header.
+	 */
+	private void readHeader(File soundFile) throws IOException
+	{
+		FileInputStream stream = new FileInputStream(soundFile);
+		stream.mark(50);
+		stream.skip(16);
+
+		byte[] chunk = new byte[4];
+		stream.read(chunk);
+
+		ByteBuffer buffer = ByteBuffer.allocate(4);
+		buffer.put(chunk);
+		buffer.rewind();
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
+		long sizeOfChunk = buffer.getInt();
+
+		int headerSize = 0;
+		if(sizeOfChunk == 16)
+		{
+			headerSize = 44;
+		}
+		else
+		{
+			headerSize = 46;
+		}
+
+		header = new byte[headerSize];
+		stream.reset();
+		int headerRead = stream.read(header);
 	}
 
 	/*
@@ -296,9 +324,9 @@ public class D3Sound
 	 */
 	public byte[] soundWithHeader()
 	{
-		ByteBuffer buffer = ByteBuffer.allocate(convolutedByteArray.length + WAVE_HEADER_SIZE);
-		buffer.put(convolutedByteArray);
+		ByteBuffer buffer = ByteBuffer.allocate(convolutedByteArray.length + header.length);
 		buffer.put(header);
+		buffer.put(convolutedByteArray);
 		return buffer.array();
 	}
 

@@ -13,4 +13,10 @@ public class Scenario9 implements TrueScenario
 	{
 		return new byte[0];
 	}
+
+	@Override
+	public ScenarioInfo scenarioInfo()
+	{
+		return null;
+	}
 }

@@ -40,7 +40,7 @@ public class D3SoundTest extends TestCase
 		System.out.println("Hrir L shape: " + session.getHrir_l().shapeInfoToString());
 
 		// A large buffer size gives better results.
-		D3Sound sound = new D3Sound(44100 * 8, new File("res/sound/test/cello-down.wav"), session);
+		D3Sound sound = new D3Sound(44100 * 8, new File("res/sound/test/gong.wav"), session);
 		sound.setAttenuation(0.3);
 		sound.step();
 

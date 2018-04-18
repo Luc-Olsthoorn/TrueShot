@@ -91,6 +91,14 @@ public class Scenario3 implements TrueScenario
 		return mixer.mix();
 	}
 
+	@Override
+	public ScenarioInfo scenarioInfo()
+	{
+		ScenarioInfo info = new ScenarioInfo();
+		info.mixer = this.mixer;
+		return info;
+	}
+
 }
 
 

@@ -13,4 +13,13 @@ public class Scenario5 implements TrueScenario
 	{
 		return new byte[0];
 	}
+
+	@Override
+	public ScenarioInfo scenarioInfo()
+	{
+//		ScenarioInfo info = new ScenarioInfo();
+//		info.mixer = this.mixer;
+//		return info;
+		return  null;
+	}
 }
