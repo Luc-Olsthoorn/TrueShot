@@ -7,7 +7,6 @@ import threeD.trueshot.lib.util.dsp.Convolution;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -16,9 +15,9 @@ public class D3Sound
 	int WAVE_HEADER_SIZE = 44;
 
 	public HrtfSession session;
-	Convolution rightConvolution;
-	Convolution leftConvolution;
-
+	private double attenuation;
+	private Convolution rightConvolution;
+	private  Convolution leftConvolution;
 	private int BUFFER_SIZE;
 	private int bytesRead;
 	private SourceDataLine soundLine;
@@ -26,12 +25,8 @@ public class D3Sound
 	private AudioInputStream audioInputStream;
 	public AudioFormat audioFormat;
 	public DataLine.Info info;
-	private byte[] header;
+	private byte[] header = new byte[WAVE_HEADER_SIZE];
 	private byte[] convolutedByteArray;
-
-	public byte[] getConvolutedByteArray() {
-		return convolutedByteArray;
-	}
 
 	/**
 	 * Creates a 3D sound which can be played using the step() method.
@@ -44,13 +39,14 @@ public class D3Sound
 		this.session = session;
 		BUFFER_SIZE = bufferSize;
 		this.soundFile = soundFile;
+		attenuation = 1.0;
 		createConvolutioners();
 		try
 		{
 			prepareSoundLine();
 			FileInputStream stream = new FileInputStream(soundFile);
-			int byteRead = stream.read(header);
-			if(bytesRead != WAVE_HEADER_SIZE)
+			int headerRead = stream.read(header);
+			if(headerRead != WAVE_HEADER_SIZE)
 			{
 				System.out.println("Failed to read header");
 			}
@@ -146,6 +142,12 @@ public class D3Sound
 		// bytes to double
 		double[] sampleAsDouble = Converter.sampleToDouble(sampledData, Converter.Type.WAV);
 
+		// Volume change
+		if(attenuation != 1.0)
+		{
+			sampleAsDouble = applyAttenuation(sampleAsDouble);
+		}
+
 		// Convolution
 		double[] convolvedLeft = leftConvolution.linearConv(sampleAsDouble);
 		double[] convolvedRight = rightConvolution.linearConv(sampleAsDouble);
@@ -169,6 +171,18 @@ public class D3Sound
 		}
 		combined.flip();
 		return combined.array();
+	}
+
+	/*
+		Applies attenuation to the sample.
+	 */
+	private double[] applyAttenuation(double[] sampleAsDouble)
+	{
+		for (int i = 0; i < sampleAsDouble.length; i++)
+		{
+			sampleAsDouble[i] = sampleAsDouble[i] * attenuation;
+		}
+		return sampleAsDouble;
 	}
 
 	/**
@@ -219,6 +233,9 @@ public class D3Sound
 		createConvolutioners();
 	}
 
+	/*
+		Creates convolution objects.
+	 */
 	private void createConvolutioners()
 	{
 		this.rightConvolution = new Convolution(session.getHrir_r().data().asDouble());
@@ -263,6 +280,25 @@ public class D3Sound
 		buffer.put(convolutedByteArray);
 		buffer.put(header);
 		return buffer.array();
+	}
+
+	/**
+	 * Gets the current steps convoluted byte array.
+	 * @return
+	 */
+	public byte[] getConvolutedByteArray() {
+		return convolutedByteArray;
+	}
+
+
+	/**
+	 * Sets the attenuation for the sounds.
+	 * Values (0.0 - 1.0)
+	 * @param attenuation
+	 */
+	public void setAttenuation(double attenuation)
+	{
+		this.attenuation = attenuation;
 	}
 
 	/*private void modify(){

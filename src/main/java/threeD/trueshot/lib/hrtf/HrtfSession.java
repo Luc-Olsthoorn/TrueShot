@@ -1,5 +1,6 @@
 package threeD.trueshot.lib.hrtf;
 
+import com.sun.deploy.resources.Deployment_de;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.NDArrayIndex;
@@ -69,6 +70,13 @@ public class HrtfSession
 
 		// Grab delay
 		delay = (int) Math.abs(Math.round(subject.getItd().getDouble(azimuthIndex,elevationIndex)));
+
+		// Go an error, where the Nd4.zeros(0) doesn't work.
+		// Need some value in there.
+		if(delay == 0)
+		{
+			delay = 1;
+		}
 
 		if (azimuth < 0)
 		{
