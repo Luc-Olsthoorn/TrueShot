@@ -108,6 +108,7 @@ class AudioStreamer{
 	}
 	loadNew(file){
 		if(this.on){
+			console.log(file);
 			var wavURL = this.convertSoundToBlobURL(file);
 			this.buffer.push(wavURL);
 			//this.playSound(wavURL);

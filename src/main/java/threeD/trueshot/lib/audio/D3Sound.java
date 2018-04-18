@@ -1,5 +1,6 @@
 package threeD.trueshot.lib.audio;
 
+import org.nd4j.linalg.factory.Nd4j;
 import threeD.trueshot.lib.hrtf.HrtfSession;
 import threeD.trueshot.lib.util.dsp.Converter;
 import threeD.trueshot.lib.util.dsp.Convolution;
@@ -9,12 +10,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class D3Sound
 {
-	int WAVE_HEADER_SIZE = 44;
-
-	public HrtfSession session;
 	private double attenuation;
 	private Convolution rightConvolution;
 	private  Convolution leftConvolution;
@@ -23,10 +22,13 @@ public class D3Sound
 	private SourceDataLine soundLine;
 	private File soundFile;
 	private AudioInputStream audioInputStream;
+	private byte[] header;
+	private byte[] convolutedByteArray;
+
+	// These can be private, I did it for testing
+	public HrtfSession session;
 	public AudioFormat audioFormat;
 	public DataLine.Info info;
-	private byte[] header = new byte[WAVE_HEADER_SIZE];
-	private byte[] convolutedByteArray;
 
 	/**
 	 * Creates a 3D sound which can be played using the step() method.
@@ -44,17 +46,50 @@ public class D3Sound
 		try
 		{
 			prepareSoundLine();
-			FileInputStream stream = new FileInputStream(soundFile);
-			int headerRead = stream.read(header);
-			if(headerRead != WAVE_HEADER_SIZE)
-			{
-				System.out.println("Failed to read header");
-			}
+			readHeader(soundFile);
 		} catch (LineUnavailableException
 				| IOException
 				| UnsupportedAudioFileException e)
 		{
 			e.printStackTrace();
+		}
+	}
+
+	/*
+		Reads the header.
+	 */
+	private void readHeader(File soundFile) throws IOException
+	{
+		FileInputStream stream = new FileInputStream(soundFile);
+		stream.skip(16);
+
+		byte[] chunk = new byte[4];
+		stream.read(chunk);
+
+		ByteBuffer buffer = ByteBuffer.allocate(4);
+		buffer.put(chunk);
+		buffer.rewind();
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
+		long sizeOfChunk = buffer.getInt();
+
+		int headerSize = 0;
+		if(sizeOfChunk == 16)
+		{
+			headerSize = 44;
+		}
+		else
+		{
+			headerSize = 46;
+		}
+
+		header = new byte[headerSize];
+		stream.close();
+		stream = new FileInputStream(soundFile);
+		int headerRead = stream.read(header);
+		for (byte head:
+				header)
+		{
+			System.out.print(head  + " ");
 		}
 	}
 
@@ -77,6 +112,24 @@ public class D3Sound
 	}
 
 
+	public byte[] halfStepSilent(String delay)
+	{
+		int tempBufferSize = BUFFER_SIZE;
+		BUFFER_SIZE = (int) (BUFFER_SIZE / 2.0);
+		byte[] toReturn = stepSilent();
+		BUFFER_SIZE = tempBufferSize;
+		if(delay.equals("delay"))
+		{
+			ByteBuffer buffer = ByteBuffer.allocate((int) (toReturn.length + BUFFER_SIZE / 2.0));
+			byte[] zeros = Nd4j.zeros((int)(tempBufferSize / 2.0 / Double.BYTES)).data().asBytes();
+			buffer.put(zeros);
+			buffer.put(toReturn);
+
+			toReturn = buffer.array();
+		}
+		convolutedByteArray = toReturn;
+		return toReturn;
+	}
 	/**
 	 * Reads a buffer size load of data from the sound file and returns the convoluted byte array.
 	 * @return true if data was read, false otherwise
@@ -276,9 +329,9 @@ public class D3Sound
 	 */
 	public byte[] soundWithHeader()
 	{
-		ByteBuffer buffer = ByteBuffer.allocate(convolutedByteArray.length + WAVE_HEADER_SIZE);
-		buffer.put(convolutedByteArray);
+		ByteBuffer buffer = ByteBuffer.allocate(convolutedByteArray.length + header.length);
 		buffer.put(header);
+		buffer.put(convolutedByteArray);
 		return buffer.array();
 	}
 

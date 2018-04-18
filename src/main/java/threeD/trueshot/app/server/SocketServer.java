@@ -40,7 +40,9 @@ public class SocketServer {
             @Override
             public void onData(SocketIOClient client, byte[] data, AckRequest ackRequest) {
                 System.out.println("Recieved new x,y,z, processing...");
-                byte[] audio = currentScenario.buildNextStep(new TrueCoordinates(1,1,1));
+                //byte[] audio = currentScenario.buildNextStep(new TrueCoordinates(1,1,1));
+                TestHeader testHeader=  new TestHeader();
+                byte[] audio = testHeader.testHeader();
                 client.sendEvent("sound", audio);
                 System.out.println("Sent");
             }
