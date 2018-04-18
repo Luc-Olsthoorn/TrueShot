@@ -1,5 +1,6 @@
 package threeD.trueshot.lib.audio;
 
+import org.nd4j.linalg.factory.Nd4j;
 import threeD.trueshot.lib.hrtf.HrtfSession;
 import threeD.trueshot.lib.util.dsp.Converter;
 import threeD.trueshot.lib.util.dsp.Convolution;
@@ -12,9 +13,7 @@ import java.nio.ByteBuffer;
 
 public class D3Sound
 {
-	int WAVE_HEADER_SIZE = 44;
-
-	public HrtfSession session;
+	private final int WAVE_HEADER_SIZE = 44;
 	private double attenuation;
 	private Convolution rightConvolution;
 	private  Convolution leftConvolution;
@@ -23,10 +22,13 @@ public class D3Sound
 	private SourceDataLine soundLine;
 	private File soundFile;
 	private AudioInputStream audioInputStream;
-	public AudioFormat audioFormat;
-	public DataLine.Info info;
 	private byte[] header = new byte[WAVE_HEADER_SIZE];
 	private byte[] convolutedByteArray;
+
+	// These can be private, I did it for testing
+	public HrtfSession session;
+	public AudioFormat audioFormat;
+	public DataLine.Info info;
 
 	/**
 	 * Creates a 3D sound which can be played using the step() method.
@@ -77,6 +79,24 @@ public class D3Sound
 	}
 
 
+	public byte[] halfStepSilent(String delay)
+	{
+		int tempBufferSize = BUFFER_SIZE;
+		BUFFER_SIZE = (int) (BUFFER_SIZE / 2.0);
+		byte[] toReturn = stepSilent();
+		BUFFER_SIZE = tempBufferSize;
+		if(delay.equals("delay"))
+		{
+			ByteBuffer buffer = ByteBuffer.allocate((int) (toReturn.length + BUFFER_SIZE / 2.0));
+			byte[] zeros = Nd4j.zeros((int)(tempBufferSize / 2.0 / Double.BYTES)).data().asBytes();
+			buffer.put(zeros);
+			buffer.put(toReturn);
+
+			toReturn = buffer.array();
+		}
+		convolutedByteArray = toReturn;
+		return toReturn;
+	}
 	/**
 	 * Reads a buffer size load of data from the sound file and returns the convoluted byte array.
 	 * @return true if data was read, false otherwise

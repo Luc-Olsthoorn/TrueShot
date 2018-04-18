@@ -1,6 +1,7 @@
 package threeD.trueshot;
 
 import threeD.trueshot.app.scenarios.Scenario3;
+import threeD.trueshot.app.scenarios.Scenario6;
 import threeD.trueshot.app.util.TrueCoordinates;
 import threeD.trueshot.lib.audio.D3Mixer;
 import threeD.trueshot.lib.audio.D3Sound;
@@ -17,8 +18,40 @@ public class TestMixer
 	public TestMixer()
 	{
 //		testMixTwo();
-		testScenario3();
+//		testScenario3();
+		testScenario6();
 	}
+
+	private void testScenario6()
+	{
+		Scenario6 scenario6 = new Scenario6("58");
+		AudioInputStream audioInputStream = null;
+		try
+		{
+			audioInputStream = AudioSystem.getAudioInputStream(new File("res/sound/test/church.wav"));
+		} catch (UnsupportedAudioFileException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		AudioFormat audioFormat = audioInputStream.getFormat();
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+		SourceDataLine soundLine;
+		try
+		{
+			soundLine = (SourceDataLine) AudioSystem.getLine(info);
+			soundLine.open(audioFormat);
+			soundLine.start();
+			soundLine.write(scenario6.buildNextStep(new TrueCoordinates(0,0,0)), 0, scenario6.mixer.getMixedLength());
+		} catch (LineUnavailableException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 
 	private void testScenario3()
 	{
