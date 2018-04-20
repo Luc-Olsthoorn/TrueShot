@@ -36,13 +36,24 @@ public class SocketServer {
         });
     }
     public void addCoordinateListener(){
-        server.addEventListener("updateCoordinates", byte[].class, new DataListener<byte[]>() {
+        server.addEventListener("updateCoordinates", CoordinateObject.class, new DataListener<CoordinateObject>() {
             @Override
-            public void onData(SocketIOClient client, byte[] data, AckRequest ackRequest) {
-                System.out.println("Recieved new x,y,z, processing...");
-                byte[] audio = currentScenario.buildNextStep(new TrueCoordinates(1,1,1));
-                client.sendEvent("sound", audio);
-                System.out.println("Sent");
+            public void onData(SocketIOClient client, CoordinateObject data, AckRequest ackRequest) {
+                
+                try{
+                    String rotation = data.getRotation();
+                    System.out.println(rotation);
+                    System.out.println("Recieved new x,y,z, processing...");
+                    //byte[] audio = currentScenario.buildNextStep(new TrueCoordinates(1,1,1));
+                    TestHeader testHeader=  new TestHeader();
+                    byte[] audio = testHeader.testHeader();
+                    client.sendEvent("sound", audio);
+                    System.out.println("Sent");
+                }catch(Exception e){
+                    System.out.println("Invalid Json");
+                    e.printStackTrace();     
+                    return;
+                }
             }
         });
     }
