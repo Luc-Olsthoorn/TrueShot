@@ -88,7 +88,7 @@ public class Scenario3 implements TrueScenario
 		mixer.stepAll();
 
 		// Step all for this scenario and feed to server.
-		return mixer.mix();
+		return mixer.mixAddHeader();
 	}
 
 	@Override

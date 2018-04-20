@@ -93,7 +93,7 @@ public class Scenario6 implements TrueScenario
 		frame++;
 
 		// Step all for this scenario and feed to server.
-		return mixer.mix();
+		return mixer.mixAddHeader();
 	}
 
 	@Override

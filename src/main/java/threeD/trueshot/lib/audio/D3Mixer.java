@@ -1,5 +1,6 @@
 package threeD.trueshot.lib.audio;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -101,6 +102,19 @@ public class D3Mixer
 
 		mixedLength = mixedArray.length;
 		return mixedArray;
+	}
+
+	/**
+	 * Gets the mixed sound with the header.
+	 * @return
+	 */
+	public byte[] mixAddHeader()
+	{
+		byte[] mixed = mix();
+		ByteBuffer buffer = ByteBuffer.allocate(mixedLength + sounds.get(0).header.length);
+		buffer.put(sounds.get(0).header);
+		buffer.put(mixed);
+		return buffer.array();
 	}
 
 	/**

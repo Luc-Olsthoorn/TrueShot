@@ -27,7 +27,11 @@ public class Scenario5 implements TrueScenario
 			};
 
 	/*
+<<<<<<< Updated upstream
 		Four shooters.
+=======
+		Single
+>>>>>>> Stashed changes
 	 */
 	private TrueCoordinates[] shotCoords  =
 			{
@@ -36,7 +40,11 @@ public class Scenario5 implements TrueScenario
 			};
 
 	/**
+<<<<<<< Updated upstream
 	 * $
+=======
+	 * $ Constructor
+>>>>>>> Stashed changes
 	 */
 	public Scenario5(String subject)
 	{
@@ -95,7 +103,7 @@ public class Scenario5 implements TrueScenario
 		frame++;
 
 		// Step all for this scenario and feed to server.
-		return mixer.mix();
+		return mixer.mixAddHeader();
 	}
 
 	@Override
