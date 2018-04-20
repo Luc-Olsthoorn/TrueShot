@@ -22,7 +22,7 @@ public class D3Sound
 	private SourceDataLine soundLine;
 	private File soundFile;
 	private AudioInputStream audioInputStream;
-	private byte[] header;
+	public byte[] header;
 	private byte[] convolutedByteArray;
 
 	// These can be private, I did it for testing
