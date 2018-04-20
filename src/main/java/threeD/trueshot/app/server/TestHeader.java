@@ -32,10 +32,12 @@ public class TestHeader
 		byte[] soundWithHeader = soundToTestHeader.soundWithHeader();
 		ByteBuffer buffer = ByteBuffer.wrap(soundWithHeader);
 		System.out.println();
+		/*
 		for (int i = 0; i < 46; i++)
 		{
 			System.out.print(buffer.get() + " ");
 		}
+		*/
 		return soundWithHeader;
 		// send to client somehow
 

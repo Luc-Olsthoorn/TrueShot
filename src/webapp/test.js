@@ -3,7 +3,8 @@ $(document).ready(function(){
 });
 class Main{
 	constructor(){
-		let url = 'http://localhost:9092';
+		let currentHost = window.location.hostname;
+		let url = currentHost + ':9092';
 		let body = $('body');
 		let socketInterface = new SocketInterface(url);
 		let coordinateInterface = new CoordinateInterface();
@@ -15,31 +16,27 @@ class Main{
 		});
 		audioStreamer.addControls(body, ()=>{
 			let data = coordinateInterface.getCoordinates();
-
-			socketInterface.sendCoordinates();
+			console.log(data);
+			socketInterface.sendCoordinates(data);
 		});
 	}
 }
 class CoordinateInterface{
 	constructor(){
+		this.alpha = 0;
 		this.intervalTime = 100;
 		var self = this;
-		window.addEventListener("deviceorientation", self.newData, true);
+		window.addEventListener("deviceorientation", function(data){
+			self.newData(data, self)
+		}, true);
 	}
 	getCoordinates(){
 		return {
-			//"x": this.x,
-			//"y": this.y,
-			//"z": this.z
+			"rotation": this.alpha
 		};
 	}
-	newData(data){
-		console.log(data.alpha);
-		console.log(data.beta);
-		console.log(data.gamma);
-		//this.x = data.x;
-		//this.y = data.y;
-		//this.z = data.z;
+	newData(data, self){
+		this.alpha = data.alpha;
 	}
 
 }
@@ -54,7 +51,7 @@ class SocketInterface{
 		});
 	}
 	sendCoordinates(coordinates){
-		this.socket.emit('updateCoordinates');
+		this.socket.emit('updateCoordinates', coordinates);
 	}
 	getSound(callback){
 		this.socket.on('sound', function(file) {
