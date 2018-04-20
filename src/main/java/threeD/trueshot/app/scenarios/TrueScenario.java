@@ -14,4 +14,6 @@ import threeD.trueshot.app.util.TrueCoordinates;
 public interface TrueScenario
 {
 	public byte[] buildNextStep(TrueCoordinates newRotation);
+
+	public ScenarioInfo scenarioInfo();
 }

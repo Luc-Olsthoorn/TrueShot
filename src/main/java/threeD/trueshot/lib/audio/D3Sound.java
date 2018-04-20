@@ -86,11 +86,6 @@ public class D3Sound
 		stream.close();
 		stream = new FileInputStream(soundFile);
 		int headerRead = stream.read(header);
-		for (byte head:
-				header)
-		{
-			System.out.print(head  + " ");
-		}
 	}
 
 	/*

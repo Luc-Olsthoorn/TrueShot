@@ -72,18 +72,18 @@ public class TrueShot
 			case "4":
 				break;
 			case "5":
-				currentScenario = new Scenario5();
+				currentScenario = new Scenario5("58");
 				break;
 			case "6":
-				currentScenario = new Scenario6();
+				currentScenario = new Scenario6("58");
 				break;
 			case "7":
-				currentScenario = new Scenario7();
+				currentScenario = new Scenario7("58");
 				break;
 			case "8":
 				break;
 			case "9":
-				currentScenario = new Scenario9();
+				currentScenario = new Scenario9("58");
 				break;
 			default:
 		}

@@ -8,9 +8,20 @@ import threeD.trueshot.app.util.TrueCoordinates;
  */
 public class Scenario9 implements TrueScenario
 {
+	public Scenario9(String s)
+	{
+
+	}
+
 	@Override
 	public byte[] buildNextStep(TrueCoordinates newRotation)
 	{
 		return new byte[0];
+	}
+
+	@Override
+	public ScenarioInfo scenarioInfo()
+	{
+		return null;
 	}
 }

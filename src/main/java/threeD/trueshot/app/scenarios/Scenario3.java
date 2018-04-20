@@ -22,7 +22,7 @@ public class Scenario3 implements TrueScenario
 	private String subject;
 	private String[] soundsFiles =
 			{
-				"res/sound/test/cello-down.wav",
+				"res/sound/test/gong.wav",
 				"res/sound/test/cat.wav",
 				"res/sound/test/crunch.wav",
 				"res/sound/test/gong.wav"
@@ -53,10 +53,14 @@ public class Scenario3 implements TrueScenario
 		sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
 		sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
 
-		sounds.add(new D3Sound(44100 * 20, new File(soundsFiles[0]), sessions.get(0)));
-		sounds.add(new D3Sound(44100 * 20, new File(soundsFiles[1]), sessions.get(1)));
-		sounds.add(new D3Sound(44100 * 20, new File(soundsFiles[2]), sessions.get(2)));
-		sounds.add(new D3Sound(44100 * 20, new File(soundsFiles[3]), sessions.get(3)));
+		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[0]), sessions.get(0)));
+		sounds.get(0).setAttenuation(0.5);
+		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[1]), sessions.get(1)));
+		sounds.get(1).setAttenuation(0.2);
+		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[2]), sessions.get(2)));
+		sounds.get(2).setAttenuation(0.3);
+		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[3]), sessions.get(3)));
+		sounds.get(3).setAttenuation(0.9);
 
 		mixer = new D3Mixer(sounds);
 	}
@@ -85,6 +89,14 @@ public class Scenario3 implements TrueScenario
 
 		// Step all for this scenario and feed to server.
 		return mixer.mix();
+	}
+
+	@Override
+	public ScenarioInfo scenarioInfo()
+	{
+		ScenarioInfo info = new ScenarioInfo();
+		info.mixer = this.mixer;
+		return info;
 	}
 
 }
