@@ -5,7 +5,13 @@ import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.DataListener;
+
 import threeD.trueshot.app.scenarios.Scenario3;
+import threeD.trueshot.app.scenarios.Scenario5;
+import threeD.trueshot.app.scenarios.Scenario6;
+import threeD.trueshot.app.scenarios.Scenario7;
+import threeD.trueshot.app.scenarios.Scenario9;
+
 import threeD.trueshot.app.scenarios.TrueScenario;
 import threeD.trueshot.app.util.TrueCoordinates;
 
@@ -23,15 +29,45 @@ public class SocketServer {
         config.setMaxHttpContentLength(1024 * 1024);
         server = new SocketIOServer(config);
         currentScenario = new Scenario3("58");
+        this.newScenarioListener();
     }
-    //DEPRECATED FOR NOW
     public void newScenarioListener()
     {
-        server.addEventListener("updateScenario", byte[].class, new DataListener<byte[]>() {
+        server.addEventListener("updateScenario", ScenarioObject.class, new DataListener<ScenarioObject>() {
+
             @Override
-            public void onData(SocketIOClient socketIOClient, byte[] bytes, AckRequest ackRequest) throws Exception {
+            public void onData(SocketIOClient socketIOClient, ScenarioObject data, AckRequest ackRequest) throws Exception {
                 // build depending on scenario
-                currentScenario = new Scenario3("58");
+                String scenario =  data.getScenario();
+                //TODO: EXTRACT THIS INTO ITS OWN CLASS GODDAMIT 
+                switch (scenario)
+                {
+                    case "Scenario1":
+                        break;
+                    case "Scenario2":
+                        break;
+                    case "Scenario3":
+                    //              currentScenario = new Scenario3();
+                        break;
+                    case "Scenario4":
+                        break;
+                    case "Scenario5":
+                        currentScenario = new Scenario5("58");
+                        break;
+                    case "Scenario6":
+                        currentScenario = new Scenario6("58");
+                        break;
+                    case "Scenario7":
+                        currentScenario = new Scenario7("58");
+                        break;
+                    case "Scenario8":
+                        break;
+                    case "Scenario9":
+                        currentScenario = new Scenario9("58");
+                        break;
+                    default:
+                }           
+                System.out.println(scenario);
             }
         });
     }
