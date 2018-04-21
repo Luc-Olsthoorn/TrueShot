@@ -1,4 +1,5 @@
 package threeD.trueshot.app.scenarios;
+import threeD.trueshot.app.util.TrueCoordinates;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Multi-person-shot with identifiable sounds that represent different weapons.
  */
-public class diffWeapons04 {
+public class Scenario4 implements TrueScenario {
     private  double x;
     private  double y;
     private  double ele;
@@ -25,7 +26,7 @@ public class diffWeapons04 {
 
     };
 
-    public diffWeapons04(double x, double y, double ele, int numOfSound){
+    public Scenario4(double x, double y, double ele, int numOfSound){
         this.x = x;
         this.y = y;
         this.ele = ele;
@@ -54,7 +55,7 @@ public class diffWeapons04 {
     public void step(){
         // Generate convolved array of each sound
         for (int i = 0; i < sounds.length; i++){
-            sounds[i].step();
+            sounds[i].stepSilent();
         }
         this.setConvolvedBteArray();//Copy convolved array here
 //        modify();//Do modification
@@ -69,6 +70,16 @@ public class diffWeapons04 {
 
     public ArrayList<byte[]> getConvolvedByteArray() {
         return convolvedByteArrays;
+    }
+
+    @Override
+    public byte[] buildNextStep(TrueCoordinates newRotation) {
+        return new byte[0];
+    }
+
+    @Override
+    public ScenarioInfo scenarioInfo() {
+        return null;
     }
 
 
