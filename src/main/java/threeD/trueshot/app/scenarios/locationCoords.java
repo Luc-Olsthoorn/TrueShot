@@ -1,4 +1,4 @@
-package threeD.trueshot.Scenarios;
+package threeD.trueshot.app.scenarios;
 
 public class locationCoords {
     public  double x;

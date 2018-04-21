@@ -1,4 +1,4 @@
-package threeD.trueshot.Scenarios;
+package threeD.trueshot.app.scenarios;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
@@ -62,7 +62,7 @@ public class diffWeapons04 {
 
     private void setConvolvedBteArray() {
         for (int i = 0; i < sounds.length; i++){
-            convolvedByteArrays.add(i, sounds[i].getConvolvedByteArray());
+            convolvedByteArrays.add(i, sounds[i].getConvolutedByteArray());
         }
 
     }

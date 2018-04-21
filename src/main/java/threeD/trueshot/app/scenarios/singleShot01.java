@@ -1,4 +1,4 @@
-package threeD.trueshot.Scenarios;
+package threeD.trueshot.app.scenarios;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
@@ -40,7 +40,7 @@ public class singleShot01 {
     }
 
     private byte[] setConvolvedBteArray() {
-        return sound.getConvolvedByteArray();
+        return sound.getConvolutedByteArray();
     }
 
 
