@@ -14,7 +14,8 @@ class Main{
 		socketInterface.getSound((file)=>{
 			audioStreamer.loadNew(file);
 		});
-		audioStreamer.addControls(body, ()=>{
+		let btn =$('#btnDiv');
+		audioStreamer.addControls(btn, ()=>{
 			let data = coordinateInterface.getCoordinates();
 			console.log(data);
 			socketInterface.sendCoordinates(data);
@@ -69,10 +70,10 @@ class AudioStreamer{
 	}
 	addControls(divToBindTo, startStreamCallback){
 		this.audioStreamerControls = new AudioStreamerControls(divToBindTo);
-		this.audioStreamerControls.addStartButton(()=>{
+		this.audioStreamerControls.addStartCallback(()=>{
 			this.startStream(startStreamCallback);
 		});
-		this.audioStreamerControls.addStopButton(()=>{
+		this.audioStreamerControls.addStopCallback(()=>{
 			this.stopStream();
 		});
 	}
@@ -115,25 +116,39 @@ class AudioStreamer{
 class AudioStreamerControls{
 	constructor(divToBindTo){
 		this.divToBindTo = divToBindTo;
-	}
-	addStartButton(callback){
-		this.startButton = $(`
-			<button class="ui button">
-			Start
-		</button>`);
-		this.startButton.on("click", function(){
-			callback();
+		this.state = true;
+		this.btn = $(`<div class="btn play">
+				<span class="bar bar-1"></span>
+				<span class="bar bar-2"></span>				
+			</div>`);
+		this.element = $(`
+		<div class="btncontainer" style="margin:0px;">
+			
+		</div>`); 
+		this.element.append(this.btn);
+		this.divToBindTo.append(this.element);
+		this.element.on("click", ()=>{
+			if(this.state){
+				$(this.btn).removeClass('play');
+				$(this.btn).addClass('pause');
+				this.state = false;
+				this.startCallback();
+			}else{
+				$(this.btn).removeClass('pause');
+				$(this.btn).addClass('play');
+				this.state =true;
+				this.stopCallback();
+			}
 		});
-		this.divToBindTo.append(this.startButton);
 	}
-	addStopButton(callback){
-		this.stopButton = $(`
-			<button class="ui button">
-			Stop
-		</button>`);
-		this.stopButton.on("click", function(){
-			callback();
-		});
-		this.divToBindTo.append(this.stopButton);
+
+	addStartCallback(callback){
+		this.startCallback = callback;
+		
+
+	}
+	addStopCallback(callback){
+		this.stopCallback = callback;
+
 	}
 }

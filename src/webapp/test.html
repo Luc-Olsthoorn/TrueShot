@@ -4,8 +4,64 @@
 <script src="js/semantic.min.js"></script>
 <html>
 <link href="css/semantic.min.css" rel="stylesheet" type="text/css">
-<body>
-	<h1>Trueshot</h1>
+<body style="background-color:#1b1c1d;">
+	<style>
+	.btncontainer {
+	position: relative;
+	
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	}
+	.btn {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: white 3px solid;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: border 0.1s ease-in-out;
+}
+.btn:hover {
+  border: #333 3px solid;
+}
+.btn:hover .bar {
+  background-color: #333;
+}
+.btn .bar {
+  display: inline-block;
+  position: absolute;
+  top: 36px;
+  left: 28;
+  width: 3px;
+  height: 20px;
+  border-radius: 120px;
+  background-color: white;
+  transform-origin: center;
+  transition: transform 0.4s ease-in-out, background 0.1s ease-in-out;
+}
+.btn.pause .bar-1 {
+  transform: translateX(13.5px) translateY(0px) rotate(0deg);
+}
+.btn.pause .bar-2 {
+  transform: translateX(24px) translateY(0px) rotate(0deg);
+}
+.btn.play .bar-1 {
+  transform: translateX(20px) translateY(-5px) rotate(-55deg);
+}
+.btn.play .bar-2 {
+  transform: translateX(20px) translateY(5px) rotate(-125deg);
+}
+			
+	</style>
+	<h1 class="header inverted thin " style="text-align:center; color:white; top:10%; width:100%;font-size:10vw; margin:0px;">TrueShot</h1> 
+	<div class="ui container" style="color:white; text-align:center;">
+  <p></i>TrueShot is a way of determining battlefield information, with a simplistic 3d audio interface </i></p>
+</div>
+	<div id="btnDiv" style="top: 30%;position: relative;">
+		</div>
 </body>
 </html>
 <script src="test.js"></script>
