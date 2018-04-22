@@ -1,4 +1,5 @@
 package threeD.trueshot.app.scenarios;
+import threeD.trueshot.app.util.TrueCoordinates;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
@@ -7,7 +8,7 @@ import java.io.File;
 /**
  * One shooter, one shot at one location.
  */
-public class singleShot01 {
+public class Scenario1 implements TrueScenario {
 
     private  double x;
     private  double y;
@@ -26,12 +27,12 @@ public class singleShot01 {
      * @param ele
      * @param path
      */
-    public singleShot01(double x, double y, double ele, String path, int duration){
+    public Scenario1(double x, double y, double ele, String path, int duration){
         this.x = x;
         this.y = y;
         this.ele = ele;
         this.azimuth = Math.atan2(y, x) * (180 / Math.PI);
-        this.bufferSize = duration*177222;//177222 is 1 second of beep
+        this.bufferSize = duration*4*44100;//177222 is 1 second of beep
 
         session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
         sound = new D3Sound(bufferSize, new File(path), session);
@@ -53,14 +54,18 @@ public class singleShot01 {
     }
 
     public void step(){
-        sound.step();
+        sound.stepSilent();
         this.convolvedByteArray = setConvolvedBteArray();
     }
 
 
+    @Override
+    public byte[] buildNextStep(TrueCoordinates newRotation) {
+        return new byte[0];
+    }
 
-
-
-
-
+    @Override
+    public ScenarioInfo scenarioInfo() {
+        return null;
+    }
 }

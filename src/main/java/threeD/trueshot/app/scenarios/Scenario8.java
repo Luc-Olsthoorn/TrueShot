@@ -1,4 +1,5 @@
 package threeD.trueshot.app.scenarios;
+import threeD.trueshot.app.util.TrueCoordinates;
 import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
@@ -7,7 +8,7 @@ import java.io.File;
 /**
  * Continuous shooting at a given location: A shooter is fire continuous from a location.
  */
-public class ctnsShot08 {
+public class Scenario8 implements TrueScenario {
     private  double x;
     private  double y;
     private  double ele;
@@ -18,7 +19,7 @@ public class ctnsShot08 {
     private int bufferSize;
 
 
-    public ctnsShot08(double x, double y, double ele, String path, int duration){
+    public Scenario8(double x, double y, double ele, String path, int duration){
         this.x = x;
         this.y = y;
         this.ele = ele;
@@ -45,7 +46,7 @@ public class ctnsShot08 {
     }
 
     public void step(){
-        sound.step();// Generate convolved array
+        sound.stepSilent();// Generate convolved array
         this.convolvedByteArray = setConvolvedBteArray();//Copy convolved array here
         modify();//Do modification
     }
@@ -61,5 +62,15 @@ public class ctnsShot08 {
                 j =firstIndex; i+=1;
             }
         }
+    }
+
+    @Override
+    public byte[] buildNextStep(TrueCoordinates newRotation) {
+        return new byte[0];
+    }
+
+    @Override
+    public ScenarioInfo scenarioInfo() {
+        return null;
     }
 }

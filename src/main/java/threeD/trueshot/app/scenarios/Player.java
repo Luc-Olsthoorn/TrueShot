@@ -1,7 +1,8 @@
 package threeD.trueshot.app.scenarios;
 
+import threeD.trueshot.app.util.TrueCoordinates;
+
 import javax.sound.sampled.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.Scanner;
@@ -57,7 +58,7 @@ public class Player {
 
             switch (c) {
                 case '1': {
-                    singleShot01 scenario01 = new singleShot01(x, y, -45, "res/sound/test/input16.wav", duration);
+                    Scenario1 scenario01 = new Scenario1(x, y, -45, "res/sound/test/input16.wav", duration);
                     byte[] convolvedBteArray01 = scenario01.getConvolvedByteArray();
                     Player player01 = new Player(scenario01.sound.audioFormat, scenario01.sound.info);
                     player01.play(convolvedBteArray01);
@@ -65,15 +66,18 @@ public class Player {
                 break;
 
                 case '2': {
-                    ArrayList<locationCoords> LocationCoords = new ArrayList<>();
-                    LocationCoords.add(0, new locationCoords(4, 0, 0));
-                    LocationCoords.add(1, new locationCoords(1, 0, 0));
-                    LocationCoords.add(2, new locationCoords(-4, 0, 0));
+                    ArrayList<TrueCoordinates> shotCoords = new ArrayList<>();
+                    shotCoords.add(0, new TrueCoordinates(3, 0, 0));
+                    shotCoords.add(1, new TrueCoordinates(1, 0, 0));
+                    shotCoords.add(2, new TrueCoordinates(-2, 0, 0));
 
-                    someShots02 scenario02 = new someShots02(LocationCoords, 3);
+                    Scenario2 scenario02 = new Scenario2(shotCoords, 3);
 
                     ArrayList<byte[]> convolvedByteArrays02 = scenario02.getConvolvedByteArray();
-                    Player player02 = new Player(scenario02.sounds[0].audioFormat, scenario02.sounds[0].info);
+                    Player player02 = new Player(scenario02.sounds.get(0).audioFormat, scenario02.sounds.get(0).info);
+
+//                    TrueCoordinates headRotation = new TrueCoordinates(0, 0, 0);
+//                    player02.play(scenario02.buildNextStep(headRotation));
 
                     for (int i = 0; i < convolvedByteArrays02.size(); i++) {
                         player02.play(convolvedByteArrays02.get(i));
@@ -83,7 +87,7 @@ public class Player {
                 break;
 
                 case '4': {
-                    diffWeapons04 scenario04 = new diffWeapons04(x, y, elevation, 3);
+                    Scenario4 scenario04 = new Scenario4(x, y, elevation, 3);
                     ArrayList<byte[]> convolvedByteArrays04 = scenario04.getConvolvedByteArray();
                     Player player04 = new Player(scenario04.sounds[0].audioFormat, scenario04.sounds[0].info);
                     for (int i = 0; i < convolvedByteArrays04.size(); i++) {
@@ -93,58 +97,13 @@ public class Player {
                 break;
 
                 case '8': {
-                    ctnsShot08 scenario08 = new ctnsShot08(x, y, elevation, "res/sound/test/beep.wav", duration);
+                    Scenario8 scenario08 = new Scenario8(x, y, elevation, "res/sound/test/beep.wav", duration);
                     byte[] convolvedByteArray08 = scenario08.getConvolvedByteArray();
                     Player player08 = new Player(scenario08.sound.audioFormat, scenario08.sound.info);
                     player08.play(convolvedByteArray08);
                 }
 
             }
-
-
-        //Create scenarios
-//        singleShot01 scenario01 = new singleShot01(x, y, -45, "res/sound/test/input16.wav", duration);
-//        ctnsShot08 scenario08 = new ctnsShot08(x, y, elevation, "res/sound/test/beep.wav", duration);
-//        diffWeapons04 scenario04 = new diffWeapons04(x, y, elevation, 3);
-
-        /*ArrayList<locationCoords> LocationCoords = new ArrayList<>();
-        LocationCoords.add(0, new locationCoords(4, 0, 0));
-        LocationCoords.add(1, new locationCoords(1, 0, 0));
-        LocationCoords.add(2, new locationCoords(-4, 0, 0));
-
-        someShots02 scenario02 = new someShots02(LocationCoords, 3);*/
-
-
-
-
-        //Get final array and play
-//        byte[] convolvedByteArray08 = scenario08.getConvolvedByteArray();
-//        Player player08 = new Player(scenario08.sound.audioFormat, scenario08.sound.info);
-
-//        byte[] convolvedBteArray01 = scenario01.getConvolvedByteArray();
-//        Player player01 = new Player(scenario01.sound.audioFormat, scenario01.sound.info);
-
-//        ArrayList<byte[]> convolvedByteArrays04 = scenario04.getConvolvedByteArray();
-//        Player player04 = new Player(scenario04.sounds[0].audioFormat, scenario04.sounds[0].info);
-
-//        ArrayList<byte[]> convolvedByteArrays02 = scenario02.getConvolvedByteArray();
-//        Player player02 = new Player(scenario02.sounds[0].audioFormat, scenario02.sounds[0].info);
-
-
-
-
-
-
-//        player01.play(convolvedBteArray01);
-//        player08.play(convolvedByteArray08);
-//        for (int i = 0; i < convolvedByteArrays04.size(); i++){
-//            player04.play(convolvedByteArrays04.get(i));
-//        }
-
-//        for (int i = 0; i < convolvedByteArrays02.size(); i++){
-//            player02.play(convolvedByteArrays02.get(i));
-//        }
-
     }
 
 }
