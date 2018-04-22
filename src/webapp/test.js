@@ -82,6 +82,7 @@ class AudioStreamer{
 		this.intervalTime = intervalTime;
 		this.on = false;
 		this.buffer =[]; 
+		this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 	}
 	addControls(divToBindTo, startStreamCallback){
 		this.audioStreamerControls = new AudioStreamerControls(divToBindTo);
@@ -110,10 +111,22 @@ class AudioStreamer{
 	}
 	playSound(wavURL){
 		var audio = new Audio(wavURL);
-		audio.play();
+		//audio.play();
 	}
 	convertSoundToBlobURL(file){
+		
 		var arrayBuffer = new Uint8Array(file).buffer;
+		
+		var source = this.audioCtx.createBufferSource();
+		var self = this;
+		this.audioCtx.decodeAudioData(
+                    arrayBuffer, 
+                    function (buffer) {
+                        source.buffer = buffer;
+                        source.connect(self.audioCtx.destination);
+                        source.loop = false;
+                    });
+        source.start(0);
     	var blob = new Blob([arrayBuffer], {type : 'audio/wav'});
     	var url = URL.createObjectURL(blob);
     	//console.log(url);
