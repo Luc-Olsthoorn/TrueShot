@@ -7,6 +7,19 @@ class Main{
 		let url = currentHost + ':9092';
 		let body = $('body');
 		let socketInterface = new SocketInterface(url);
+		let btn =$('#btnDiv');
+		btn.append(`
+		 
+		    <div class="ui indeterminate active text loader" style="color:white">Connecting to socket</div>
+`);
+		socketInterface.addOnConnect(()=>{
+			btn.empty();
+			audioStreamer.addControls(btn, ()=>{
+			let data = coordinateInterface.getCoordinates();
+			console.log(data);
+			socketInterface.sendCoordinates(data);
+			});
+		});
 		let coordinateInterface = new CoordinateInterface();
 		let intervalTime = 1000;
 		let numSegmentsDelay = 10;
@@ -14,12 +27,8 @@ class Main{
 		socketInterface.getSound((file)=>{
 			audioStreamer.loadNew(file);
 		});
-		let btn =$('#btnDiv');
-		audioStreamer.addControls(btn, ()=>{
-			let data = coordinateInterface.getCoordinates();
-			console.log(data);
-			socketInterface.sendCoordinates(data);
-		});
+		
+		
 	}
 }
 class CoordinateInterface{
@@ -44,6 +53,12 @@ class CoordinateInterface{
 class SocketInterface{
 	constructor(url){
 		this.socket =  io.connect(url);
+		
+	}
+	addOnConnect(callback){
+		this.socket.on('connect', function() {
+		  callback();
+		});
 	}
 	getConfig(callback){
 		this.socket.emit('getConfig');

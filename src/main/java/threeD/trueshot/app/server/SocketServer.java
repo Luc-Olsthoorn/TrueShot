@@ -23,8 +23,8 @@ public class SocketServer {
     SocketServer(int inputPort){
         port = inputPort;
         Configuration config = new Configuration();
-        config.setHostname("localhost");
-        config.setPort(9092);
+        //config.setHostname("localhost");
+        config.setPort(port);
         config.setMaxFramePayloadLength(1024 * 1024);
         config.setMaxHttpContentLength(1024 * 1024);
         server = new SocketIOServer(config);
