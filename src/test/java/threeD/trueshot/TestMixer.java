@@ -18,7 +18,7 @@ public class TestMixer
 	{
 //		testMixTwo();
 //		testScenario3();
-		testScenario(5);
+		testScenario(3);
 	}
 
 	private void testScenario(int scenario)

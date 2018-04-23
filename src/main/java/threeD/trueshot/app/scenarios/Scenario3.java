@@ -22,7 +22,7 @@ public class Scenario3 implements TrueScenario
 	private String subject;
 	private String[] soundsFiles =
 			{
-				"res/sound/test/gong.wav",
+				"res/sound/test/church.wav",
 				"res/sound/test/cat.wav",
 				"res/sound/test/crunch.wav",
 				"res/sound/test/gong.wav"
