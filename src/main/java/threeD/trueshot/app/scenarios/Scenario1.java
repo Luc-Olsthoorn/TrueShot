@@ -4,64 +4,45 @@ import threeD.trueshot.lib.audio.D3Sound;
 import threeD.trueshot.lib.hrtf.Hrtf;
 import threeD.trueshot.lib.hrtf.HrtfSession;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * One shooter, one shot at one location.
  */
 public class Scenario1 implements TrueScenario {
 
-    private  double x;
-    private  double y;
-    private  double ele;
-    private  double azimuth;
-    public HrtfSession session;
-    public D3Sound sound;
-    private byte[] convolvedByteArray;
-    private int bufferSize;
 
+    public ArrayList<D3Sound> sounds;
+    private ArrayList<HrtfSession> sessions;
+    private String subject;
 
-    /**
-     *
-     * @param x
-     * @param y
-     * @param ele
-     * @param path
-     */
-    public Scenario1(double x, double y, double ele, String path, int duration){
-        this.x = x;
-        this.y = y;
-        this.ele = ele;
-        this.azimuth = Math.atan2(y, x) * (180 / Math.PI);
-        this.bufferSize = duration*4*44100;//177222 is 1 second of beep
+    private TrueCoordinates[] shotCoords = {
+            new TrueCoordinates(4, 0, 0)
+    };
 
-        session = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
-        sound = new D3Sound(bufferSize, new File(path), session);
+    public Scenario1(String subject){
 
-        step();
-    }
+        this.subject = subject;
+        sessions = new ArrayList<>();
+        sounds = new ArrayList<>();
 
-    private byte[] setConvolvedBteArray() {
-        return sound.getConvolutedByteArray();
-    }
-
-
-    /**
-     * Can be invoked to get the convoluted byte[].
-     * @return
-     */
-    public byte[] getConvolvedByteArray() {
-        return convolvedByteArray;
-    }
-
-    public void step(){
-        sound.stepSilent();
-        this.convolvedByteArray = setConvolvedBteArray();
+       sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
+       sounds.add(new D3Sound(44100*4, new File("res/sound/test/input16.wav"), sessions.get(0)));
+       sounds.get(0).setAttenuation(0.6);
     }
 
 
     @Override
-    public byte[] buildNextStep(TrueCoordinates newRotation) {
-        return new byte[0];
+    public byte[] buildNextStep(TrueCoordinates headRotation) {
+        int index = 0;
+        for (D3Sound sound : sounds){
+            shotCoords[index].setOrigin(headRotation.azimuth);
+            sound.changeSoundDirection(shotCoords[index].getAdjustedAzimuth(), shotCoords[index].getAdjustedElevation());
+            index++;
+        }
+
+        sounds.get(0).stepSilent();
+        return sounds.get(0).soundWithHeader();
     }
 
     @Override

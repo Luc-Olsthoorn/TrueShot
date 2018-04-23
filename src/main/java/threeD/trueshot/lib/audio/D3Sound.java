@@ -357,16 +357,4 @@ public class D3Sound
 		this.attenuation = attenuation;
 	}
 
-	/*private void modify(){
-		int firstIndex = getfirstNonZero();
-		int lastIndex = getlastNonZero();
-
-		for (int i = lastIndex+1, j = firstIndex; i < convolutedByteArray.length; i++, j++){
-//				System.arraycopy(convoledData, j, convolutedByteArray, i, 1);
-			convolutedByteArray[i] = convolutedByteArray[j];
-			if (j == lastIndex) {
-				j =firstIndex; i+=1;
-			}
-		}
-	}*/
 }

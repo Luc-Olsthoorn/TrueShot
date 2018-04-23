@@ -55,55 +55,54 @@ public class Player {
             c = 'q';
         }
 
-
+            TrueScenario scenario ;
             switch (c) {
                 case '1': {
-                    Scenario1 scenario01 = new Scenario1(x, y, -45, "res/sound/test/input16.wav", duration);
-                    byte[] convolvedBteArray01 = scenario01.getConvolvedByteArray();
-                    Player player01 = new Player(scenario01.sound.audioFormat, scenario01.sound.info);
-                    player01.play(convolvedBteArray01);
+                    scenario = new Scenario1("58");
+                    Player player = new Player(((Scenario1) scenario).sounds.get(0).audioFormat, ((Scenario1) scenario).sounds.get(0).info);
+                    TrueCoordinates rotation = new TrueCoordinates(3, 0, 0);
+                    for (int i = 0; i < 5; i++){
+                        player.play(scenario.buildNextStep(rotation));
+                    }
                 }
                 break;
 
                 case '2': {
-                    ArrayList<TrueCoordinates> shotCoords = new ArrayList<>();
-                    shotCoords.add(0, new TrueCoordinates(3, 0, 0));
-                    shotCoords.add(1, new TrueCoordinates(1, 0, 0));
-                    shotCoords.add(2, new TrueCoordinates(-2, 0, 0));
-
-                    Scenario2 scenario02 = new Scenario2(shotCoords, 3);
-
-                    ArrayList<byte[]> convolvedByteArrays02 = scenario02.getConvolvedByteArray();
-                    Player player02 = new Player(scenario02.sounds.get(0).audioFormat, scenario02.sounds.get(0).info);
-
-//                    TrueCoordinates headRotation = new TrueCoordinates(0, 0, 0);
-//                    player02.play(scenario02.buildNextStep(headRotation));
-
-                    for (int i = 0; i < convolvedByteArrays02.size(); i++) {
-                        player02.play(convolvedByteArrays02.get(i));
+                    scenario = new Scenario2("58");
+                    Player player = new Player(((Scenario2) scenario).sounds.get(0).audioFormat, ((Scenario2) scenario).sounds.get(0).info);
+                    TrueCoordinates rotation = new TrueCoordinates(3, 0, 0);
+                    for (int i = 0; i < 5; i++){
+                        player.play(scenario.buildNextStep(rotation));
                     }
-
                 }
                 break;
 
                 case '4': {
-                    Scenario4 scenario04 = new Scenario4(x, y, elevation, 3);
-                    ArrayList<byte[]> convolvedByteArrays04 = scenario04.getConvolvedByteArray();
-                    Player player04 = new Player(scenario04.sounds[0].audioFormat, scenario04.sounds[0].info);
-                    for (int i = 0; i < convolvedByteArrays04.size(); i++) {
-                        player04.play(convolvedByteArrays04.get(i));
+                    scenario = new Scenario4("58");
+                    Player player = new Player(((Scenario4) scenario).sounds.get(0).audioFormat, ((Scenario4) scenario).sounds.get(0).info);
+                    TrueCoordinates rotation = new TrueCoordinates(3, 0, 0);
+                    for (int i = 0; i < 5; i++){
+                        player.play(scenario.buildNextStep(rotation));
                     }
                 }
                 break;
 
                 case '8': {
-                    Scenario8 scenario08 = new Scenario8(x, y, elevation, "res/sound/test/beep.wav", duration);
-                    byte[] convolvedByteArray08 = scenario08.getConvolvedByteArray();
-                    Player player08 = new Player(scenario08.sound.audioFormat, scenario08.sound.info);
-                    player08.play(convolvedByteArray08);
+                    scenario = new Scenario8("58");
+                    Player player = new Player(((Scenario8) scenario).sounds.get(0).audioFormat, ((Scenario8) scenario).sounds.get(0).info);
+                    TrueCoordinates rotation = new TrueCoordinates(3, 0, 0);
+                    for (int i = 0; i < 5; i++){
+                        player.play(scenario.buildNextStep(rotation));
+                    }
                 }
+                break;
 
+                    default:
+                        break;
             }
+
+
+
     }
 
 }

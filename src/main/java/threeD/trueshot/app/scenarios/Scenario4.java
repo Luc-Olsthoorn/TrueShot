@@ -10,71 +10,98 @@ import java.util.ArrayList;
  * Multi-person-shot with identifiable sounds that represent different weapons.
  */
 public class Scenario4 implements TrueScenario {
-    private  double x;
-    private  double y;
-    private  double ele;
-    private  double azimuth;
-    public HrtfSession[] sessions;
-    public D3Sound[] sounds;
-    private ArrayList<byte[]> convolvedByteArrays;
-    private int bufferSize;
 
-    private String[] pathes = {
+    public ArrayList<D3Sound> sounds;
+    private ArrayList<HrtfSession> sessions;
+    private String subject;
+    private int frame;
+    private String[] soundsFiles = {
             "res/sound/test/input16.wav",
             "res/sound/test/crunch.wav",
             "res/sound/test/c2.wav"
 
     };
 
-    public Scenario4(double x, double y, double ele, int numOfSound){
-        this.x = x;
-        this.y = y;
-        this.ele = ele;
-        this.azimuth = Math.atan2(y, x) * (180 / Math.PI);
-        //A single 4*44100 is buffer size about 1 second of beep
-        this.bufferSize = 1*4*44100;//duration*4*44100
-
-        sessions = new HrtfSession[numOfSound];
-        sounds = new D3Sound[numOfSound];
-
-        convolvedByteArrays = new ArrayList<>();
-
-        for (int i = 0; i < numOfSound; i++){
-            sessions[i] = new HrtfSession(Hrtf.getCipicSubject("58"), (90 - azimuth), ele);
-            sounds[i] = new D3Sound(bufferSize, new File(pathes[i]), sessions[i]);
-        }
+    private TrueCoordinates[] shotCoords  =
+            {
+                    new TrueCoordinates(4, -4, 0)
+            };
 
 
-        step();
-    }
+    /**
+     * Constructor
+     * @param subject
+     */
+    public Scenario4(String subject){
+        this.subject = subject;
+        sessions = new ArrayList<>();
+        sounds = new ArrayList<>();
+        frame = 0;
 
 
+        //Build sounds according to weapons numbers
+        for (int i = 0; i < soundsFiles.length; i++){
+            sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
+            sounds.add(new D3Sound(44100*4, new File(soundsFiles[i]), sessions.get(i)));
 
-
-
-    public void step(){
-        // Generate convolved array of each sound
-        for (int i = 0; i < sounds.length; i++){
-            sounds[i].stepSilent();
-        }
-        this.setConvolvedBteArray();//Copy convolved array here
-//        modify();//Do modification
-    }
-
-    private void setConvolvedBteArray() {
-        for (int i = 0; i < sounds.length; i++){
-            convolvedByteArrays.add(i, sounds[i].getConvolutedByteArray());
+            // TODO: 4/22 022 Write a function to apply attenuation
         }
 
     }
 
-    public ArrayList<byte[]> getConvolvedByteArray() {
-        return convolvedByteArrays;
-    }
+
+//    public void step(){
+//        // Generate convolved array of each sound
+//        for (int i = 0; i < sounds.length; i++){
+//            sounds[i].stepSilent();
+//        }
+//        this.setConvolvedBteArray();//Copy convolved array here
+////        modify();//Do modification
+//    }
+//
+//    private void setConvolvedBteArray() {
+//        for (int i = 0; i < sounds.length; i++){
+//            convolvedByteArrays.add(i, sounds[i].getConvolutedByteArray());
+//        }
+//
+//    }
+//
+//    public ArrayList<byte[]> getConvolvedByteArray() {
+//        return convolvedByteArrays;
+//    }
 
     @Override
-    public byte[] buildNextStep(TrueCoordinates newRotation) {
-        return new byte[0];
+    public byte[] buildNextStep(TrueCoordinates headRotation) {
+        int index = 0;
+        //Pay attention to the index of shotCoords.
+        for (D3Sound sound: sounds) {
+            // Set the origin to this new rotation angle
+            shotCoords[0].setOrigin(headRotation.azimuth);
+
+            // Now update the sound to use the correct azimuth and elevation
+            sound.changeSoundDirection(shotCoords[0].getAdjustedAzimuth(), shotCoords[0].getAdjustedElevation());
+            index++;
+        }
+
+
+        switch (frame){
+            case 0:
+                sounds.get(0).stepSilent();
+                break;
+            case 1:
+                sounds.get(1).stepSilent();
+                break;
+            case 2:
+                sounds.get(2).stepSilent();
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
+        frame++;
+
+        return sounds.get(frame-1).soundWithHeader();
     }
 
     @Override
@@ -82,17 +109,4 @@ public class Scenario4 implements TrueScenario {
         return null;
     }
 
-
-    /*private void modify(){
-        int firstIndex = sound.getfirstNonZero();
-        int lastIndex = sound.getlastNonZero();
-
-        for (int i = lastIndex+1, j = firstIndex; i < convolvedByteArray.length; i++, j++){
-//				System.arraycopy(convoledData, j, convolvedByteArray, i, 1);
-            convolvedByteArray[i] = convolvedByteArray[j];
-            if (j == lastIndex) {
-                j =firstIndex; i+=1;
-            }
-        }
-    }*/
 }
