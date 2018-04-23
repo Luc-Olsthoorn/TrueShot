@@ -50,7 +50,15 @@ public class SocketServer {
                     System.out.println(rotation);
                     System.out.println("Recieved new x,y,z, processing...");
                     TrueCoordinates trueCoordinates= new TrueCoordinates(0,0,0);
-                    trueCoordinates.azimuth = Double.valueOf(rotation);
+                    try
+                    {
+                        trueCoordinates.azimuth = Double.valueOf(rotation);
+                    }
+                    catch (Exception e)
+                    {
+                        trueCoordinates.azimuth = 0;
+                    }
+
                     byte[] audio = currentScenario.buildNextStep(trueCoordinates);
                     
                     //TestHeader testHeader=  new TestHeader();
