@@ -8,17 +8,17 @@ public class ScenarioBuilder
 		switch (scenario)
                 {
                     case "Scenario1":
-                        //currentScenario = new Scenario1(cipic);
+                        currentScenario = new Scenario1(cipic);
                         break;
                     case "Scenario2":
-                        //currentScenario = new Scenario2(cipic);
+                        currentScenario = new Scenario2(cipic);
                         break;
                     case "Scenario3":
                         currentScenario = new Scenario3(cipic);
                     //              currentScenario = new Scenario3();
                         break;
                     case "Scenario4":
-                        //currentScenario = new Scenario4(cipic);
+                        currentScenario = new Scenario4(cipic);
                         break;
                     case "Scenario5":
                         currentScenario = new Scenario5(cipic);
@@ -30,7 +30,7 @@ public class ScenarioBuilder
                         currentScenario = new Scenario7(cipic);
                         break;
                     case "Scenario8":
-                        //currentScenario = new Scenario8(cipic);
+                        currentScenario = new Scenario8(cipic);
                         break;
                     case "Scenario9":
                         currentScenario = new Scenario9(cipic);
