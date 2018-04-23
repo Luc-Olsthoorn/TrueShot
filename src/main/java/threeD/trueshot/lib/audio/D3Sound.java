@@ -22,6 +22,7 @@ public class D3Sound
 	private SourceDataLine soundLine;
 	private File soundFile;
 	private AudioInputStream audioInputStream;
+	private boolean finished;
 	public byte[] header;
 	private byte[] convolutedByteArray;
 
@@ -46,6 +47,7 @@ public class D3Sound
 		try
 		{
 			prepareSoundLine();
+			finished = false;
 			readHeader(soundFile);
 		} catch (LineUnavailableException
 				| IOException
@@ -109,6 +111,7 @@ public class D3Sound
 
 	public byte[] halfStepSilent(String delay)
 	{
+		if (finished) return new byte[BUFFER_SIZE];
 		int tempBufferSize = BUFFER_SIZE;
 		BUFFER_SIZE = (int) (BUFFER_SIZE / 2.0);
 		byte[] toReturn = stepSilent();
@@ -141,12 +144,17 @@ public class D3Sound
 			e.printStackTrace();
 		}
 
-		if (bytesRead >= 0)
+		if (bytesRead > 0)
 		{
 			byte[] convolutedData = applyHrtf(sampledData);
 			//Copy this byte[] to a new byte[]
 			convolutedByteArray = new byte[convolutedData.length];
 			System.arraycopy(convolutedData, 0, convolutedByteArray, 0, convolutedData.length);
+		}
+		else
+		{
+			convolutedByteArray = sampledData;
+			finished = true;
 		}
 		return convolutedByteArray;
 	}
