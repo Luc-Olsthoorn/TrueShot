@@ -22,10 +22,10 @@ public class Scenario3 implements TrueScenario
 	private String subject;
 	private String[] soundsFiles =
 			{
-				"res/sound/test/church.wav",
-				"res/sound/test/cat.wav",
-				"res/sound/test/crunch.wav",
-				"res/sound/test/gong.wav"
+				"res/sound/test/6C.wav",
+				"res/sound/test/25E.wav",
+				"res/sound/test/33F.wav",
+				"res/sound/test/49G.wav"
 			};
 
 	/*
@@ -54,13 +54,13 @@ public class Scenario3 implements TrueScenario
 		sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
 
 		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[0]), sessions.get(0)));
-		sounds.get(0).setAttenuation(0.5);
+		sounds.get(0).setAttenuation(0.3);
 		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[1]), sessions.get(1)));
 		sounds.get(1).setAttenuation(0.2);
 		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[2]), sessions.get(2)));
 		sounds.get(2).setAttenuation(0.3);
 		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[3]), sessions.get(3)));
-		sounds.get(3).setAttenuation(0.9);
+		sounds.get(3).setAttenuation(0.2);
 
 		mixer = new D3Mixer(sounds);
 	}

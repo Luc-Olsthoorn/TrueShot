@@ -22,8 +22,8 @@ public class Scenario6 implements TrueScenario
 	private String subject;
 	private String[] soundsFiles =
 			{
-					"res/sound/test/cat.wav",
-					"res/sound/test/cat.wav"
+					"res/sound/test/6C.wav",
+					"res/sound/test/25E.wav"
 			};
 
 	/*
@@ -88,6 +88,8 @@ public class Scenario6 implements TrueScenario
 				sounds.get(1).stepSilent();
 				break;
 			default:
+				sounds.get(0).stepSilent();
+				sounds.get(1).stepSilent();
 				break;
 		}
 		frame++;

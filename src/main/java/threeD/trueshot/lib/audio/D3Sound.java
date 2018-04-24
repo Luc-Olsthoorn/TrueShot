@@ -153,7 +153,7 @@ public class D3Sound
 		}
 		else
 		{
-			convolutedByteArray = sampledData;
+			convolutedByteArray = new byte[50];
 			finished = true;
 		}
 		return convolutedByteArray;
@@ -357,4 +357,12 @@ public class D3Sound
 		this.attenuation = attenuation;
 	}
 
+	/**
+	 * Returns if the sound is finished.
+	 * @return
+	 */
+	public boolean isFinished()
+	{
+		return finished;
+	}
 }

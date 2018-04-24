@@ -46,12 +46,24 @@ public class D3Mixer
 	 */
 	public byte[] mix()
 	{
+		if(soundsFinished())
+		{
+			return new byte[50];
+		}
 		byte[] mixedArray = sounds.get(0).getConvolutedByteArray();
 		boolean newSmaller = false;
 
 		// For each sound
 		for (D3Sound sound: sounds.subList(1, sounds.size()))
 		{
+			/*
+				Only mix sounds that are not finished.
+			 */
+			if(sound.isFinished())
+			{
+				System.out.println("finished");
+				continue;
+			}
 			byte[] soundArray = sound.getConvolutedByteArray();
 			if(soundArray == null) break;
 			int smaller;
@@ -102,6 +114,22 @@ public class D3Mixer
 
 		mixedLength = mixedArray.length;
 		return mixedArray;
+	}
+
+	/*
+		Checks for all of the sounds being finished.
+	 */
+	private boolean soundsFinished()
+	{
+		for (D3Sound sound:
+		     sounds)
+		{
+			if (!sound.isFinished())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

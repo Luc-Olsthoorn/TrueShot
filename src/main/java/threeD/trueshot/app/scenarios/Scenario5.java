@@ -23,29 +23,15 @@ public class Scenario5 implements TrueScenario
 	private String[] soundsFiles =
 			{
 					"res/sound/test/radioGarble.wav",
-					"res/sound/test/crunch.wav",
+					"res/sound/test/6C.wav",
 			};
 
-	/*
-<<<<<<< Updated upstream
-		Four shooters.
-=======
-		Single
->>>>>>> Stashed changes
-	 */
 	private TrueCoordinates[] shotCoords  =
 			{
 					new TrueCoordinates(0, 0, 0),
 					new TrueCoordinates(4, -4, 0),
 			};
 
-	/**
-<<<<<<< Updated upstream
-	 * $
-=======
-	 * $ Constructor
->>>>>>> Stashed changes
-	 */
 	public Scenario5(String subject)
 	{
 		this.subject = subject;
@@ -56,11 +42,11 @@ public class Scenario5 implements TrueScenario
 		sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
 		sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
 
-		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[0]), sessions.get(0)));
-		sounds.get(0).setAttenuation(0.8);
+		sounds.add(new D3Sound(44100 * 8, new File(soundsFiles[0]), sessions.get(0)));
+		sounds.get(0).setAttenuation(0.3);
 
-		sounds.add(new D3Sound(44100 * 4, new File(soundsFiles[1]), sessions.get(1)));
-		sounds.get(1).setAttenuation(0.5);
+		sounds.add(new D3Sound(44100 * 8, new File(soundsFiles[1]), sessions.get(1)));
+		sounds.get(1).setAttenuation(0.8);
 
 		mixer = new D3Mixer(sounds);
 	}
@@ -98,6 +84,8 @@ public class Scenario5 implements TrueScenario
 				sounds.get(1).stepSilent();
 				break;
 			default:
+				sounds.get(0).stepSilent();
+				sounds.get(1).stepSilent();
 				break;
 		}
 		frame++;
