@@ -27,7 +27,7 @@ public class Scenario1 implements TrueScenario {
         sounds = new ArrayList<>();
 
        sessions.add(new HrtfSession(Hrtf.getCipicSubject(subject), 0, 0));
-       sounds.add(new D3Sound(44100*4, new File("res/sound/test/input16.wav"), sessions.get(0)));
+       sounds.add(new D3Sound(44100*4, new File("res/sound/test/6C.wav"), sessions.get(0)));
        sounds.get(0).setAttenuation(0.6);
     }
 

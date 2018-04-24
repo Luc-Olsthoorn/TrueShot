@@ -98,9 +98,7 @@ class AudioStreamer{
 		this.on = true; 
 		this.timer = setInterval(()=>{ 
 			//console.log(this.buffer.length);
-			if(this.buffer.length > this.numSegmentsDelay){
-				this.playSound(this.buffer.shift());
-			}
+
 			callback();
 		}, this.intervalTime);
 
@@ -127,16 +125,16 @@ class AudioStreamer{
                         source.loop = false;
                     });
         source.start(0);
-    	var blob = new Blob([arrayBuffer], {type : 'audio/wav'});
-    	var url = URL.createObjectURL(blob);
+    	//var blob = new Blob([arrayBuffer], {type : 'audio/wav'});
+    	//var url = URL.createObjectURL(blob);
     	//console.log(url);
-		return url;
+
 	}
 	loadNew(file){
 		if(this.on){
 			console.log(file);
 			var wavURL = this.convertSoundToBlobURL(file);
-			this.buffer.push(wavURL);
+			//this.buffer.push(wavURL);
 			//this.playSound(wavURL);
 		}
 	}

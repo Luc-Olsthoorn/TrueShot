@@ -16,9 +16,9 @@ public class Scenario4 implements TrueScenario {
     private String subject;
     private int frame;
     private String[] soundsFiles = {
-            "res/sound/test/input16.wav",
-            "res/sound/test/crunch.wav",
-            "res/sound/test/c2.wav"
+            "res/sound/test/6C.wav",
+            "res/sound/test/25E.wav",
+            "res/sound/test/33F.wav"
 
     };
 
@@ -48,27 +48,6 @@ public class Scenario4 implements TrueScenario {
         }
 
     }
-
-
-//    public void step(){
-//        // Generate convolved array of each sound
-//        for (int i = 0; i < sounds.length; i++){
-//            sounds[i].stepSilent();
-//        }
-//        this.setConvolvedBteArray();//Copy convolved array here
-////        modify();//Do modification
-//    }
-//
-//    private void setConvolvedBteArray() {
-//        for (int i = 0; i < sounds.length; i++){
-//            convolvedByteArrays.add(i, sounds[i].getConvolutedByteArray());
-//        }
-//
-//    }
-//
-//    public ArrayList<byte[]> getConvolvedByteArray() {
-//        return convolvedByteArrays;
-//    }
 
     @Override
     public byte[] buildNextStep(TrueCoordinates headRotation) {

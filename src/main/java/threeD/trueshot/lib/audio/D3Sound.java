@@ -128,6 +128,7 @@ public class D3Sound
 		convolutedByteArray = toReturn;
 		return toReturn;
 	}
+
 	/**
 	 * Reads a buffer size load of data from the sound file and returns the convoluted byte array.
 	 * @return true if data was read, false otherwise
